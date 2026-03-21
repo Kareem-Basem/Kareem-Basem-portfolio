@@ -33,10 +33,10 @@ export default function GlassCard({ dark, glow, className = '', onClick, style =
 
   return (
     <div
-      className={`relative ${className}`}
+      className={`relative shimmer ${className}`}
       style={{
         ...(hov ? hover : base),
-        transition: 'all 0.32s cubic-bezier(0.22,1,0.36,1)',
+        transition: 'all 0.2s ease',
         cursor: onClick ? 'pointer' : 'default',
         ...style,
       }}

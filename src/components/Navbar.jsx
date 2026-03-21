@@ -70,7 +70,7 @@ export default function Navbar() {
         {links.map(l => (
           <li key={l.id}>
             <a href={`#${l.id}`}
-              className="text-sm font-medium transition-colors duration-200"
+              className="text-sm font-medium transition-colors duration-200 nav-link"
               style={lc(l.id)}>
               {l.label}
             </a>

@@ -286,7 +286,7 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
   const canClick = !!modalType;
 
   return (
-    <div className="reveal relative rounded-2xl overflow-hidden flex flex-col"
+    <div className="relative rounded-2xl overflow-hidden flex flex-col"
       style={{
         transitionDelay:`${delay}s`,
         background: gbg,
@@ -297,7 +297,7 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
           ? `0 20px 55px ${m.glow}, inset 0 1px 0 rgba(255,255,255,${dark?'0.09':'0.92'})`
           : `0 3px 18px rgba(0,0,0,${dark?'0.22':'0.06'}), inset 0 1px 0 rgba(255,255,255,${dark?'0.06':'0.88'})`,
         transform: hov ? 'translateY(-6px) scale(1.005)' : 'none',
-        transition:'all 0.32s cubic-bezier(0.22,1,0.36,1)',
+        transition:'all 0.2s ease',
         cursor: canClick ? 'pointer' : 'default',
       }}
       onMouseEnter={() => setHov(true)}
@@ -399,7 +399,7 @@ export default function Projects() {
     <>
       <section id="projects" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300">
         <SectionHeader tag={tr.projTag} title={tr.projTitle}/>
-        <div className="grid md:grid-cols-2 gap-5">
+        <div className="grid md:grid-cols-2 gap-5 stagger">
           {tr.projects.map((p, i) => (
             <GlassCard key={i} p={p} m={meta[i]} chips={chips[i]} index={i}
               modalType={modalTypes[i]} dark={dark}

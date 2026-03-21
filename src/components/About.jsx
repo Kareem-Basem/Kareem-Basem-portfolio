@@ -28,12 +28,12 @@ export default function About() {
         {/* Text */}
         <div className="space-y-4">
           {[tr.aboutP1, tr.aboutP2].map((p, i) => (
-            <p key={i} className="reveal text-[0.95rem] md:text-[1rem] leading-[1.9]"
-              style={{ color:muted(dark), transitionDelay:`${i*0.1}s` }}>
+            <p key={i} className="text-[0.95rem] md:text-[1rem] leading-[1.9]"
+              style={{ color:muted(dark) }}>
               {p}
             </p>
           ))}
-          <div className="reveal space-y-2 pt-1" style={{ transitionDelay:'0.2s' }}>
+          <div className="space-y-2 pt-1" style={{ transitionDelay:'0.2s' }}>
             {[
               { e:'🏅', text: lang==='ar' ? 'بطل الكشافة الوطني — المركز الأول (2020)' : 'National Scout Excellence Champion — 1st Place (2020)' },
               { e:'🏆', text: lang==='ar' ? 'مديرية أسيوط — المركز الأول (2019)'       : '2019 · Asyut Directorate — Scout Excellence, 1st Place' },
@@ -47,11 +47,11 @@ export default function About() {
         </div>
 
         {/* Skills grid — 2 cols on all sizes */}
-        <div className="grid grid-cols-2 gap-2.5 md:gap-3">
+        <div className="grid grid-cols-2 gap-2.5 md:gap-3 stagger">
           {skills.map(({ Icon, key, glow }, i) => (
             <GlassCard key={key} dark={dark} glow={glow}
-              className="reveal rounded-xl overflow-hidden"
-              style={{ transitionDelay:`${i*0.07}s` }}>
+              className="rounded-xl overflow-hidden"
+              style={{ }}>
               <div className="flex items-center gap-2.5 px-3 md:px-4 py-3 md:py-3.5">
                 <span style={{ color:'#f0a500', flexShrink:0 }}><Icon size={17}/></span>
                 <span className="text-xs md:text-sm font-medium leading-tight" style={{ color:ink(dark) }}>

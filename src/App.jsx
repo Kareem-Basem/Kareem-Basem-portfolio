@@ -72,8 +72,13 @@ function Inner() {
 
   useEffect(() => {
     const obs = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-      { threshold: 0.08 }
+      entries => entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          obs.unobserve(e.target); // stop observing once visible
+        }
+      }),
+      { threshold: 0, rootMargin: '0px 0px -30px 0px' }
     );
     const timer = setTimeout(() => {
       document.querySelectorAll('.reveal').forEach(el => obs.observe(el));

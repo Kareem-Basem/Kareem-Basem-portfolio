@@ -72,27 +72,24 @@
 .ping2   { animation: ping2 2s infinite; }
 .float   { animation: float 6s ease-in-out infinite; }
 
-/* ── SCROLL REVEAL — unified across all sections ── */
+/* ── SCROLL REVEAL — instant, no delay ── */
 .reveal {
   opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1),
-              transform 0.7s cubic-bezier(0.22,1,0.36,1);
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 .reveal.visible { opacity: 1; transform: none; }
 
-/* Stagger delays */
-.d1 { transition-delay: 0.08s; }
-.d2 { transition-delay: 0.16s; }
-.d3 { transition-delay: 0.24s; }
-.d4 { transition-delay: 0.32s; }
-.d5 { transition-delay: 0.40s; }
+.d1 { transition-delay: 0.03s; }
+.d2 { transition-delay: 0.06s; }
+.d3 { transition-delay: 0.09s; }
+.d4 { transition-delay: 0.12s; }
+.d5 { transition-delay: 0.15s; }
 
-/* Legacy delay classes */
-.delay-1 { transition-delay: 0.08s; }
-.delay-2 { transition-delay: 0.16s; }
-.delay-3 { transition-delay: 0.24s; }
-.delay-4 { transition-delay: 0.32s; }
+.delay-1 { transition-delay: 0.03s; }
+.delay-2 { transition-delay: 0.06s; }
+.delay-3 { transition-delay: 0.09s; }
+.delay-4 { transition-delay: 0.12s; }
 
 /* ── DARK MODE ── */
 .dark { color-scheme: dark; }
@@ -130,4 +127,95 @@
   opacity: 1;
   transform: translateY(0) scale(1);
   pointer-events: all;
+}
+
+/* ── SMOOTH SCROLL ── */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── PAGE TRANSITIONS — fade sections on scroll ── */
+@keyframes sectionIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── SHIMMER — for glass cards on hover ── */
+@keyframes shimmer {
+  0%   { transform: translateX(-100%) skewX(-15deg); }
+  100% { transform: translateX(200%) skewX(-15deg); }
+}
+.shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
+  transform: translateX(-100%) skewX(-15deg);
+  pointer-events: none;
+}
+.shimmer:hover::after {
+  animation: shimmer 0.7s ease forwards;
+}
+
+/* ── GLOW PULSE — for amber accents ── */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(240,165,0,0.3); }
+  50%       { box-shadow: 0 0 20px rgba(240,165,0,0.6); }
+}
+.glow-pulse { animation: glowPulse 2.5s ease-in-out infinite; }
+
+/* ── STAGGER CHILDREN — for grids ── */
+.stagger > *:nth-child(1) { animation-delay: 0.00s; }
+.stagger > *:nth-child(2) { animation-delay: 0.06s; }
+.stagger > *:nth-child(3) { animation-delay: 0.12s; }
+.stagger > *:nth-child(4) { animation-delay: 0.18s; }
+.stagger > *:nth-child(5) { animation-delay: 0.24s; }
+.stagger > *:nth-child(6) { animation-delay: 0.30s; }
+
+/* ── REVEAL — upgraded with blur ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  filter: blur(4px);
+  transition: opacity 0.4s ease, transform 0.4s ease, filter 0.4s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+  filter: blur(0px);
+}
+
+/* ── CARD LIFT — unified hover ── */
+.card-lift {
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.card-lift:hover {
+  transform: translateY(-5px);
+}
+
+/* ── UNDERLINE SLIDE — for nav links ── */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 1.5px;
+  background: #f0a500;
+  transition: width 0.25s ease;
+}
+.nav-link:hover::after,
+.nav-link.active::after { width: 100%; }
+
+/* ── FLOATING BADGE ── */
+@keyframes floatBadge {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+.float-badge { animation: floatBadge 3s ease-in-out infinite; }
+
+/* ── SCROLL PROGRESS GLOW ── */
+#scroll-progress {
+  filter: drop-shadow(0 0 4px rgba(240,165,0,0.5));
 }

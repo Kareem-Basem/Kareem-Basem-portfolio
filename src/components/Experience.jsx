@@ -47,7 +47,7 @@ function ExpCard({ e, dark, lang, delay = 0 }) {
   const acc  = accentMap[e.type];
   const Icon = getIcon(e.org, e.type);
   return (
-    <GlassCard dark={dark} glow={acc.glow} className="reveal rounded-2xl"
+    <GlassCard dark={dark} glow={acc.glow} className="reveal rounded-2xl card-lift"
       style={{ transitionDelay:`${delay}s`, borderTop:`3px solid ${acc.color}` }}>
       <div className="p-5">
         {/* Top row */}
@@ -138,7 +138,7 @@ const expDataEn = {
       type:'training', date:'Jul 2025',
       role:'Maharat Digital Marketing',
       org:'Banque Misr × Google', location:'Online',
-      desc:'Digital Marketing Fundamentals & online business strategies via "Maharat min Google" program.',
+      desc:'Digital Marketing Fundamentals & online business strategies via"Maharat min Google" program.',
       certImg:'/assets/certs/banque_misr_training.jpg',
     },
     {

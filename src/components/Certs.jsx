@@ -97,11 +97,11 @@ export default function Certs() {
         {lang==='ar' ? 'اضغط الفئة لتوسيعها · اضغط الشهادة لعرض صورتها' : 'Click category to expand · Click cert to preview'}
       </p>
 
-      <div className="flex flex-col gap-2.5 w-full max-w-3xl">
+      <div className="flex flex-col gap-2.5 w-full max-w-3xl stagger">
         {groups.map((g, gi) => {
           const isOpen = open===gi;
           return (
-            <div key={gi} className="reveal" style={{ transitionDelay:`${gi*0.07}s` }}>
+            <div key={gi} className="" style={{ }}>
               {/* Group header button */}
               <GlassCard dark={dark} glow={g.glow} className="rounded-2xl" onClick={() => setOpen(isOpen?null:gi)}
                 style={{
