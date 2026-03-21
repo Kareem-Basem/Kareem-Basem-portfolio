@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background-color: #fdfcf9; color: #1a1a2e; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #fdfcf9; }
+  ::-webkit-scrollbar-thumb { background: #f0a500; border-radius: 4px; }
+}
+
+@layer utilities {
+  .font-serif-display { font-family: 'DM Serif Display', serif; }
+}
+
+/* ── BLOBS ── */
+.blob-hero {
+  position: absolute;
+  border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+  animation: morph 9s ease-in-out infinite;
+  pointer-events: none;
+}
+.blob-hero-2 {
+  position: absolute;
+  border-radius: 45% 55% 40% 60% / 55% 45% 60% 40%;
+  animation: morph2 11s ease-in-out infinite;
+  pointer-events: none;
+}
+.blob-avatar {
+  border-radius: 60% 40% 55% 45% / 50% 55% 45% 55%;
+  animation: morph 9s ease-in-out infinite;
+}
+@keyframes morph {
+  0%,100% { border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; transform: rotate(0deg); }
+  40%      { border-radius: 50% 50% 40% 60% / 60% 40% 55% 45%; transform: rotate(7deg) scale(1.03); }
+  70%      { border-radius: 40% 60% 60% 40% / 45% 55% 45% 55%; transform: rotate(-4deg); }
+}
+@keyframes morph2 {
+  0%,100% { border-radius: 45% 55% 40% 60% / 55% 45% 60% 40%; }
+  50%      { border-radius: 55% 45% 60% 40% / 40% 60% 40% 60%; transform: rotate(10deg) scale(1.05); }
+}
+
+/* ── SYSTEM ANIMATIONS ── */
+@keyframes ping2 {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.3; transform: scale(0.4); }
+}
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+/* Unified fadeUp used everywhere */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: none; }
+}
+/* Unified fadeIn for subtle elements */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+/* Slide in from left */
+@keyframes slideLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.ping2   { animation: ping2 2s infinite; }
+.float   { animation: float 6s ease-in-out infinite; }
+
+/* ── SCROLL REVEAL — unified across all sections ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1),
+              transform 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* Stagger delays */
+.d1 { transition-delay: 0.08s; }
+.d2 { transition-delay: 0.16s; }
+.d3 { transition-delay: 0.24s; }
+.d4 { transition-delay: 0.32s; }
+.d5 { transition-delay: 0.40s; }
+
+/* Legacy delay classes */
+.delay-1 { transition-delay: 0.08s; }
+.delay-2 { transition-delay: 0.16s; }
+.delay-3 { transition-delay: 0.24s; }
+.delay-4 { transition-delay: 0.32s; }
+
+/* ── DARK MODE ── */
+.dark { color-scheme: dark; }
+.dark body { background-color: #0f0f14 !important; color: #e8e8f0; }
+
+/* RTL */
+[dir="rtl"] body { font-family: 'Plus Jakarta Sans', 'Segoe UI', Tahoma, sans-serif; }
+
+/* ── SCROLL PROGRESS BAR ── */
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2.5px;
+  background: linear-gradient(90deg, #f0a500, #2a9d8f);
+  z-index: 9999;
+  transition: width 0.1s linear;
+  pointer-events: none;
+}
+
+/* ── BACK TO TOP ── */
+#back-top {
+  position: fixed;
+  bottom: 2rem; right: 2rem;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 200;
+  opacity: 0;
+  transform: translateY(12px) scale(0.85);
+  transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
+  pointer-events: none;
+  cursor: pointer;
+}
+#back-top.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
