@@ -29,8 +29,7 @@
 * **Styling:** Tailwind CSS + Custom Animations
 * **Icons:** Lucide React
 * **Fonts:** DM Serif Display, Plus Jakarta Sans, Dancing Script
-* **State Management:** React Context API + localStorage
-* 
+* **State Management:** React Context API + localStorage 
 ---
 
 ## 📁 Project Structure
