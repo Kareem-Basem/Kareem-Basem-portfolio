@@ -30,8 +30,7 @@
 * **Icons:** Lucide React
 * **Fonts:** DM Serif Display, Plus Jakarta Sans, Dancing Script
 * **State Management:** React Context API + localStorage
-* **Deployment:** Vercel
-
+* 
 ---
 
 ## 📁 Project Structure
