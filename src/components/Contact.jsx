@@ -22,7 +22,7 @@ export default function Contact() {
     <>
       <section id="contact"
         style={{ background:bg }}
-        className="py-20 md:py-28 px-[5%] relative overflow-hidden transition-colors duration-300">
+        className="py-20 md:py-28 px-[5%] relative overflow-x-hidden transition-colors duration-300">
 
         {/* Ambient glow */}
         <div className="absolute pointer-events-none inset-0 flex items-center justify-center">

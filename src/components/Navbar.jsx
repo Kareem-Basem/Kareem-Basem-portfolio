@@ -133,7 +133,7 @@ export default function Navbar() {
       {/* Mobile dropdown */}
       {open && (
         <div
-          className="absolute top-full left-0 right-0 py-5 flex flex-col items-center gap-4 md:hidden"
+          className="absolute top-full left-0 right-0 py-5 flex flex-col items-center gap-4 md:hidden" dir={lang === "ar" ? "rtl" : "ltr"}
           style={{
             background: dark ? 'rgba(8,8,14,0.88)' : 'rgba(255,255,255,0.88)',
             backdropFilter: 'blur(32px) saturate(200%)',

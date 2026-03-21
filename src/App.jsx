@@ -66,8 +66,24 @@ function Inner() {
   }, [dark]);
 
   useEffect(() => {
+    // Prevent white flash on language/dir change
+    document.documentElement.style.transition = 'none';
     document.documentElement.dir  = lang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = lang;
+    // Re-enable transitions after paint
+    requestAnimationFrame(() => {
+      document.documentElement.style.transition = '';
+    });
+  }, [lang]);
+
+  useEffect(() => {
+    // Reset and re-observe all reveal elements on lang change
+    const timer = setTimeout(() => {
+      document.querySelectorAll('.reveal').forEach(el => {
+        el.classList.add('visible');
+      });
+    }, 50);
+    return () => clearTimeout(timer);
   }, [lang]);
 
   useEffect(() => {
@@ -75,7 +91,7 @@ function Inner() {
       entries => entries.forEach(e => {
         if (e.isIntersecting) {
           e.target.classList.add('visible');
-          obs.unobserve(e.target); // stop observing once visible
+          obs.unobserve(e.target);
         }
       }),
       { threshold: 0, rootMargin: '0px 0px -30px 0px' }

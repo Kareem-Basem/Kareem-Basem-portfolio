@@ -54,7 +54,7 @@ const labels = {
 function CertRow({ c, accent, glow, dark }) {
   const [exp, setExp] = useState(false);
   return (
-    <GlassCard dark={dark} glow={glow} className="rounded-xl" onClick={c.img ? () => setExp(!exp) : undefined}
+    <GlassCard dark={dark} glow={glow} className="rounded-xl float-card" onClick={c.img ? (e) => { e.preventDefault(); setExp(v => !v); } : undefined}
       style={{ cursor: c.img ? 'pointer' : 'default' }}>
       <div className="px-4 py-3 flex items-start justify-between gap-2">
         <div className="flex-1 min-w-0">
@@ -75,7 +75,7 @@ function CertRow({ c, accent, glow, dark }) {
       {exp && c.img && (
         <div className="px-4 pb-4" style={{ animation:'fadeUp .2s ease both' }}>
           <div className="rounded-xl overflow-hidden border" style={{ borderColor:`${accent}30` }}>
-            <img src={c.img} alt={c.name} className="w-full object-contain max-h-[280px]" loading="lazy"/>
+            <img src={c.img} alt={c.name} className="w-full object-contain max-h-[260px]" loading="lazy" style={{display:'block'}}/>
           </div>
         </div>
       )}
@@ -91,7 +91,7 @@ export default function Certs() {
   const lbl  = labels[lang];
 
   return (
-    <section id="certs" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300">
+    <section id="certs" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300 overflow-x-hidden">
       <SectionHeader tag={tr.certsTag} title={tr.certsTitle}/>
       <p className="text-sm mb-8 -mt-6" style={{ color:faint(dark) }}>
         {lang==='ar' ? 'اضغط الفئة لتوسيعها · اضغط الشهادة لعرض صورتها' : 'Click category to expand · Click cert to preview'}
@@ -103,7 +103,7 @@ export default function Certs() {
           return (
             <div key={gi} className="" style={{ }}>
               {/* Group header button */}
-              <GlassCard dark={dark} glow={g.glow} className="rounded-2xl" onClick={() => setOpen(isOpen?null:gi)}
+              <GlassCard dark={dark} glow={g.glow} className="rounded-2xl float-card" onClick={() => setOpen(isOpen?null:gi)}
                 style={{
                   cursor:'pointer',
                   ...(isOpen ? { background:`${g.accent}14`, border:`1px solid ${g.accent}38`, boxShadow:`0 8px 28px ${g.glow}` } : {}),

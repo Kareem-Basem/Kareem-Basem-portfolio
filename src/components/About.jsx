@@ -20,7 +20,7 @@ export default function About() {
   ];
 
   return (
-    <section id="about" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300">
+    <section id="about" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300 overflow-x-hidden">
       <SectionHeader tag={tr.aboutTag} title={tr.aboutTitle}/>
       {/* Stack on mobile, side by side on desktop */}
       <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-start">
@@ -50,7 +50,7 @@ export default function About() {
         <div className="grid grid-cols-2 gap-2.5 md:gap-3 stagger">
           {skills.map(({ Icon, key, glow }, i) => (
             <GlassCard key={key} dark={dark} glow={glow}
-              className="rounded-xl overflow-hidden"
+              className="rounded-xl overflow-hidden float-card"
               style={{ }}>
               <div className="flex items-center gap-2.5 px-3 md:px-4 py-3 md:py-3.5">
                 <span style={{ color:'#f0a500', flexShrink:0 }}><Icon size={17}/></span>

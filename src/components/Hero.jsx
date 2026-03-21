@@ -82,7 +82,7 @@ export default function Hero() {
 
       {/* Background blobs */}
       <div className="blob-hero hidden sm:block w-[500px] h-[500px] bg-amber opacity-[0.06]"
-        style={{ position:'absolute', top:-80, right:-80, pointerEvents:'none' }}/>
+        style={{ position:'absolute', top:-80, insetInlineEnd:-80, pointerEvents:'none' }}/>
       <div className="blob-hero-2 hidden sm:block w-[300px] h-[300px] bg-teal opacity-[0.05]"
         style={{ position:'absolute', bottom:-40, left:'10%', pointerEvents:'none' }}/>
 

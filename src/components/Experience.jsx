@@ -47,7 +47,7 @@ function ExpCard({ e, dark, lang, delay = 0 }) {
   const acc  = accentMap[e.type];
   const Icon = getIcon(e.org, e.type);
   return (
-    <GlassCard dark={dark} glow={acc.glow} className="reveal rounded-2xl card-lift"
+    <GlassCard dark={dark} glow={acc.glow} className="reveal rounded-2xl float-card"
       style={{ transitionDelay:`${delay}s`, borderTop:`3px solid ${acc.color}` }}>
       <div className="p-5">
         {/* Top row */}
@@ -223,7 +223,7 @@ export default function Experience() {
   const divStyle = dark ? 'rgba(255,255,255,0.08)' : 'rgba(26,26,46,0.08)';
 
   return (
-    <section id="experience" style={{ background: bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300">
+    <section id="experience" style={{ background: bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300 overflow-x-hidden">
       <SectionHeader tag={tr.expTag} title={tr.expTitle} />
 
       {/* Two-column layout: Internships | Training */}

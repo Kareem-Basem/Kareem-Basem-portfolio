@@ -286,7 +286,7 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
   const canClick = !!modalType;
 
   return (
-    <div className="relative rounded-2xl overflow-hidden flex flex-col"
+    <div className="relative rounded-2xl overflow-hidden flex flex-col float-card"
       style={{
         transitionDelay:`${delay}s`,
         background: gbg,
@@ -397,7 +397,7 @@ export default function Projects() {
 
   return (
     <>
-      <section id="projects" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300">
+      <section id="projects" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300 overflow-x-hidden">
         <SectionHeader tag={tr.projTag} title={tr.projTitle}/>
         <div className="grid md:grid-cols-2 gap-5 stagger">
           {tr.projects.map((p, i) => (
