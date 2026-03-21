@@ -1,6 +1,4 @@
-# 🌐 Kareem Basem Fathi — Personal Portfolio
-
-MIS Student · Cybersecurity Enthusiast · AI Practitioner · Web Developer
+# 🌐 Portfoliooooooooo
 
 ---
 
