@@ -88,7 +88,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-4 sm:px-[5%] py-3 sm:py-4 transition-all duration-500"
+      className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-4 sm:px-[5%] py-3 sm:py-4 transition-all duration-500 mobile-surface"
       style={navStyle}>
 
       {/* Logo */}

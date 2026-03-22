@@ -7,9 +7,13 @@ import { glass } from '../utils/glass';
 const phrasesEn = ['Cybersecurity Enthusiast','AI & Gen AI Practitioner','Web Developer','Network Enthusiast','MIS Student'];
 const phrasesAr = ['متحمس للأمن السيبراني','ممارس للذكاء الاصطناعي','مطور ويب','متحمس للشبكات','طالب نظم معلومات'];
 
-function useCounter(target, duration = 1200, start = false) {
+function useCounter(target, duration = 1200, start = false, instant = false) {
   const [val, setVal] = useState(0);
   useEffect(() => {
+    if (instant) {
+      setVal(target);
+      return;
+    }
     if (!start) return;
     let startTime = null;
     const step = (ts) => {
@@ -33,7 +37,16 @@ export default function Hero() {
   const [ci, setCi]     = useState(0);
   const [del, setDel]   = useState(false);
   const [started, setStarted] = useState(false);
+  const [compactMotion, setCompactMotion] = useState(false);
   const heroRef = useRef(null);
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 768px), (pointer: coarse), (prefers-reduced-motion: reduce)');
+    const sync = () => setCompactMotion(media.matches);
+    sync();
+    media.addEventListener?.('change', sync);
+    return () => media.removeEventListener?.('change', sync);
+  }, []);
 
   useEffect(() => {
     const obs = new IntersectionObserver(([e]) => {
@@ -43,12 +56,18 @@ export default function Hero() {
     return () => obs.disconnect();
   }, []);
 
-  const certCount = useCounter(20, 1200, started);
-  const expCount  = useCounter(5,  1000, started);
-
-  useEffect(() => { setText(''); setCi(0); setPi(0); setDel(false); }, [lang]);
+  const certCount = useCounter(20, 1200, started && !compactMotion, compactMotion);
+  const expCount  = useCounter(5,  1000, started && !compactMotion, compactMotion);
 
   useEffect(() => {
+    setText(compactMotion ? phrases[0] : '');
+    setCi(0);
+    setPi(0);
+    setDel(false);
+  }, [compactMotion, lang, phrases]);
+
+  useEffect(() => {
+    if (compactMotion) return;
     const phrase = phrases[pi];
     const timer = setTimeout(() => {
       if (!del) {
@@ -62,7 +81,7 @@ export default function Hero() {
       }
     }, del ? 42 : 88);
     return () => clearTimeout(timer);
-  }, [ci, pi, del, phrases]);
+  }, [ci, compactMotion, pi, del, phrases]);
 
   const bg    = dark ? '#0f0f14' : '#fdfcf9';
   const ink   = dark ? '#f0f0f8' : '#1a1a2e';
@@ -106,7 +125,9 @@ export default function Hero() {
           style={{ animation:'fadeUp .5s .16s ease both' }}>
           <span style={{ color:amber }} className="font-bold text-lg">→</span>
           <span className="font-semibold" style={{ color:ink }}>{text}</span>
-          <span style={{ color:amber }} className="animate-[ping2_1s_step-end_infinite]">|</span>
+          {!compactMotion && (
+            <span style={{ color:amber }} className="animate-[ping2_1s_step-end_infinite]">|</span>
+          )}
         </div>
 
         {/* Currently learning */}
