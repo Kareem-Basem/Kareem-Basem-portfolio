@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { ChevronDown, Shield, Brain, Globe, BarChart2, Network } from 'lucide-react';
 import SectionHeader from './SectionHeader';
 import GlassCard from './GlassCard';
 import { useApp } from '../context/AppContext';
 import t from '../i18n/translations';
-import { ink, muted, faint, glass } from '../utils/glass';
+import { ink, muted, faint } from '../utils/glass';
 
 const groups = [
   { key:'cyber', icon:<Shield size={15}/>, accent:'#2a9d8f', glow:'rgba(42,157,143,0.25)',
@@ -53,33 +53,57 @@ const labels = {
 
 function CertRow({ c, accent, glow, dark }) {
   const [exp, setExp] = useState(false);
+  const rowRef = useRef(null);
+  const previousTopRef = useRef(null);
+
+  useLayoutEffect(() => {
+    if (previousTopRef.current == null || !rowRef.current) return;
+
+    const nextTop = rowRef.current.getBoundingClientRect().top;
+    const delta = nextTop - previousTopRef.current;
+
+    if (Math.abs(delta) > 1) {
+      window.scrollBy({ top: delta, left: 0, behavior: 'auto' });
+    }
+
+    previousTopRef.current = null;
+  }, [exp]);
+
+  const handleToggle = () => {
+    if (!c.img || !rowRef.current) return;
+    previousTopRef.current = rowRef.current.getBoundingClientRect().top;
+    setExp(v => !v);
+  };
+
   return (
-    <GlassCard dark={dark} glow={glow} className="rounded-xl float-card" onClick={c.img ? (e) => { e.preventDefault(); setExp(v => !v); } : undefined}
-      style={{ cursor: c.img ? 'pointer' : 'default' }}>
-      <div className="px-4 py-3 flex items-start justify-between gap-2">
-        <div className="flex-1 min-w-0">
-          <p className="text-[.6rem] font-semibold tracking-wider uppercase mb-0.5" style={{ color:accent }}>{c.org}</p>
-          <p className="text-[.84rem] font-semibold leading-snug" style={{ color:ink(dark) }}>{c.name}</p>
-          <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-            {c.date && <span className="text-[.63rem]" style={{ color:faint(dark) }}>{c.date}</span>}
-            {c.badge && <span className="text-[.6rem] font-semibold px-2 py-0.5 rounded-full" style={{ background:`${accent}15`, color:accent, border:`1px solid ${accent}28` }}>{c.badge}</span>}
+    <div ref={rowRef} style={{ overflowAnchor: 'none' }}>
+      <GlassCard dark={dark} glow={glow} className="rounded-xl float-card" onClick={c.img ? handleToggle : undefined}
+        style={{ cursor: c.img ? 'pointer' : 'default' }}>
+        <div className="px-4 py-3 flex items-start justify-between gap-2">
+          <div className="flex-1 min-w-0">
+            <p className="text-[.6rem] font-semibold tracking-wider uppercase mb-0.5" style={{ color:accent }}>{c.org}</p>
+            <p className="text-[.84rem] font-semibold leading-snug" style={{ color:ink(dark) }}>{c.name}</p>
+            <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+              {c.date && <span className="text-[.63rem]" style={{ color:faint(dark) }}>{c.date}</span>}
+              {c.badge && <span className="text-[.6rem] font-semibold px-2 py-0.5 rounded-full" style={{ background:`${accent}15`, color:accent, border:`1px solid ${accent}28` }}>{c.badge}</span>}
+            </div>
           </div>
+          {c.img && (
+            <div className="w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center mt-0.5"
+              style={{ background:`${accent}15`, color:accent }}>
+              <ChevronDown size={12} style={{ transform:exp?'rotate(180deg)':'rotate(0)', transition:'transform .25s' }}/>
+            </div>
+          )}
         </div>
-        {c.img && (
-          <div className="w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center mt-0.5"
-            style={{ background:`${accent}15`, color:accent }}>
-            <ChevronDown size={12} style={{ transform:exp?'rotate(180deg)':'rotate(0)', transition:'transform .25s' }}/>
+        {exp && c.img && (
+          <div className="px-4 pb-4" style={{ animation:'fadeUp .2s ease both' }}>
+            <div className="rounded-xl overflow-hidden border" style={{ borderColor:`${accent}30` }}>
+              <img src={c.img} alt={c.name} className="w-full object-contain max-h-[260px]" loading="lazy" decoding="async" style={{display:'block'}}/>
+            </div>
           </div>
         )}
-      </div>
-      {exp && c.img && (
-        <div className="px-4 pb-4" style={{ animation:'fadeUp .2s ease both' }}>
-          <div className="rounded-xl overflow-hidden border" style={{ borderColor:`${accent}30` }}>
-            <img src={c.img} alt={c.name} className="w-full object-contain max-h-[260px]" loading="lazy" style={{display:'block'}}/>
-          </div>
-        </div>
-      )}
-    </GlassCard>
+      </GlassCard>
+    </div>
   );
 }
 
@@ -89,6 +113,39 @@ export default function Certs() {
   const [open, setOpen] = useState(0);
   const bg   = dark ? '#13131e' : '#f5f0e8';
   const lbl  = labels[lang];
+  const groupRefs = useRef({});
+  const previousGroupTopRef = useRef(null);
+  const previousGroupIndexRef = useRef(null);
+
+  useLayoutEffect(() => {
+    if (previousGroupIndexRef.current == null) return;
+
+    const groupEl = groupRefs.current[previousGroupIndexRef.current];
+    if (!groupEl || previousGroupTopRef.current == null) {
+      previousGroupTopRef.current = null;
+      previousGroupIndexRef.current = null;
+      return;
+    }
+
+    const nextTop = groupEl.getBoundingClientRect().top;
+    const delta = nextTop - previousGroupTopRef.current;
+
+    if (Math.abs(delta) > 1) {
+      window.scrollBy({ top: delta, left: 0, behavior: 'auto' });
+    }
+
+    previousGroupTopRef.current = null;
+    previousGroupIndexRef.current = null;
+  }, [open]);
+
+  const handleGroupToggle = (gi) => {
+    const groupEl = groupRefs.current[gi];
+    if (groupEl) {
+      previousGroupTopRef.current = groupEl.getBoundingClientRect().top;
+      previousGroupIndexRef.current = gi;
+    }
+    setOpen(prev => (prev === gi ? null : gi));
+  };
 
   return (
     <section id="certs" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300 overflow-x-hidden">
@@ -97,13 +154,16 @@ export default function Certs() {
         {lang==='ar' ? 'اضغط الفئة لتوسيعها · اضغط الشهادة لعرض صورتها' : 'Click category to expand · Click cert to preview'}
       </p>
 
-      <div className="flex flex-col gap-2.5 w-full max-w-3xl stagger">
+      <div className="flex flex-col gap-2.5 w-full max-w-3xl stagger" style={{ overflowAnchor: 'none' }}>
         {groups.map((g, gi) => {
           const isOpen = open===gi;
           return (
-            <div key={gi} className="" style={{ }}>
+            <div
+              key={gi}
+              ref={el => { groupRefs.current[gi] = el; }}
+              style={{ overflowAnchor: 'none' }}>
               {/* Group header button */}
-              <GlassCard dark={dark} glow={g.glow} className="rounded-2xl float-card" onClick={() => setOpen(isOpen?null:gi)}
+              <GlassCard dark={dark} glow={g.glow} className="rounded-2xl float-card" onClick={() => handleGroupToggle(gi)}
                 style={{
                   cursor:'pointer',
                   ...(isOpen ? { background:`${g.accent}14`, border:`1px solid ${g.accent}38`, boxShadow:`0 8px 28px ${g.glow}` } : {}),

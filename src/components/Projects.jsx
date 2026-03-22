@@ -148,7 +148,7 @@ function Modal({ onClose, dark, children }) {
   const overlay = dark ? 'rgba(0,0,0,0.7)' : 'rgba(0,0,0,0.5)';
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto"
-      style={{ background: overlay, backdropFilter:'blur(12px)' }}
+      style={{ background: overlay, backdropFilter:'blur(8px)' }}
       onClick={onClose}>
       <div className="relative w-full max-w-lg my-4" onClick={e => e.stopPropagation()}
         style={{ animation:'fadeUp .25s ease both' }}>
@@ -168,7 +168,7 @@ function ExamorModal({ onClose, dark, lang }) {
   return (
     <Modal onClose={onClose} dark={dark}>
       <div className="rounded-2xl p-6 shadow-2xl"
-        style={{ background:bg, border:`1px solid ${bord}`, backdropFilter:'blur(24px)' }}>
+        style={{ background:bg, border:`1px solid ${bord}`, backdropFilter:'blur(14px)' }}>
         <button onClick={onClose} className="absolute top-4 right-4 transition-colors hover:text-amber" style={{ color:muted }}><X size={18}/></button>
         <div className="flex items-center gap-3 mb-4">
           <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background:'rgba(42,157,143,0.12)', color:'#2a9d8f' }}><Server size={16}/></div>
@@ -203,7 +203,7 @@ function GTAModal({ data, onClose, dark }) {
   return (
     <Modal onClose={onClose} dark={dark}>
       <div className="rounded-2xl overflow-hidden shadow-2xl"
-        style={{ background:bg, border:`1px solid ${bord}`, backdropFilter:'blur(24px)' }}>
+        style={{ background:bg, border:`1px solid ${bord}`, backdropFilter:'blur(14px)' }}>
 
         {/* Header accent stripe */}
         <div className="h-1" style={{ background:`linear-gradient(90deg,${ac},${ac}88)` }}/>
@@ -291,8 +291,8 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
         transitionDelay:`${delay}s`,
         background: gbg,
         border:`1px solid ${hov ? m.accent+'50' : gbord}`,
-        backdropFilter:'blur(22px) saturate(160%)',
-        WebkitBackdropFilter:'blur(22px) saturate(160%)',
+        backdropFilter:'blur(12px) saturate(140%)',
+        WebkitBackdropFilter:'blur(12px) saturate(140%)',
         boxShadow: hov
           ? `0 20px 55px ${m.glow}, inset 0 1px 0 rgba(255,255,255,${dark?'0.09':'0.92'})`
           : `0 3px 18px rgba(0,0,0,${dark?'0.22':'0.06'}), inset 0 1px 0 rgba(255,255,255,${dark?'0.06':'0.88'})`,

@@ -19,16 +19,49 @@ export default function Navbar() {
   ];
 
   useEffect(() => {
-    const fn = () => {
-      setScrolled(window.scrollY > 40);
-      let cur = '';
-      document.querySelectorAll('section[id]').forEach(s => {
-        if (window.scrollY >= s.offsetTop - 130) cur = s.id;
-      });
-      setActive(cur);
+    let frame = null;
+    let sections = [];
+
+    const collectSections = () => {
+      sections = Array.from(document.querySelectorAll('section[id]'));
     };
-    window.addEventListener('scroll', fn, { passive: true });
-    return () => window.removeEventListener('scroll', fn);
+
+    const update = () => {
+      const scrollY = window.scrollY;
+      const nextScrolled = scrollY > 40;
+      let cur = '';
+
+      for (const section of sections) {
+        if (scrollY >= section.offsetTop - 130) cur = section.id;
+      }
+
+      setScrolled(prev => (prev === nextScrolled ? prev : nextScrolled));
+      setActive(prev => (prev === cur ? prev : cur));
+    };
+
+    const onScroll = () => {
+      if (frame !== null) return;
+      frame = requestAnimationFrame(() => {
+        frame = null;
+        update();
+      });
+    };
+
+    const onResize = () => {
+      collectSections();
+      onScroll();
+    };
+
+    collectSections();
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
+
+    return () => {
+      if (frame !== null) cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
+    };
   }, []);
 
   const ink   = dark ? '#f0f0f8' : '#1a1a2e';
@@ -41,8 +74,8 @@ export default function Navbar() {
     background: dark
       ? 'rgba(8,8,14,0.55)'
       : 'rgba(255,255,255,0.45)',
-    backdropFilter: 'blur(32px) saturate(220%) brightness(1.08)',
-    WebkitBackdropFilter: 'blur(32px) saturate(220%) brightness(1.08)',
+    backdropFilter: 'blur(18px) saturate(180%) brightness(1.04)',
+    WebkitBackdropFilter: 'blur(18px) saturate(180%) brightness(1.04)',
     borderBottom: `1px solid ${dark
       ? 'rgba(255,255,255,0.12)'
       : 'rgba(255,255,255,0.95)'}`,
@@ -89,7 +122,7 @@ export default function Navbar() {
             borderColor: dark ? 'rgba(255,255,255,0.14)' : 'rgba(26,26,46,0.14)',
             color: muted,
             background: dark ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.6)',
-            backdropFilter: 'blur(8px)',
+            backdropFilter: 'blur(6px)',
           }}>
           {lang === 'en' ? 'ع' : 'EN'}
         </button>
@@ -102,7 +135,7 @@ export default function Navbar() {
             borderColor: dark ? 'rgba(255,255,255,0.14)' : 'rgba(26,26,46,0.14)',
             color: dark ? '#f0a500' : muted,
             background: dark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.6)',
-            backdropFilter: 'blur(8px)',
+            backdropFilter: 'blur(6px)',
           }}>
           {dark ? <Sun size={15}/> : <Moon size={15}/>}
         </button>
@@ -115,7 +148,7 @@ export default function Navbar() {
             background: dark ? 'rgba(255,255,255,0.08)' : '#1a1a2e',
             color: dark ? '#f0f0f8' : '#fdfcf9',
             border: dark ? '1px solid rgba(255,255,255,0.10)' : 'none',
-            backdropFilter: 'blur(8px)',
+            backdropFilter: 'blur(6px)',
           }}
           onMouseEnter={e => { e.currentTarget.style.background='#f0a500'; e.currentTarget.style.color='#fff'; }}
           onMouseLeave={e => { e.currentTarget.style.background=dark?'rgba(255,255,255,0.08)':'#1a1a2e'; e.currentTarget.style.color=dark?'#f0f0f8':'#fdfcf9'; }}>
@@ -136,8 +169,8 @@ export default function Navbar() {
           className="absolute top-full left-0 right-0 py-5 flex flex-col items-center gap-4 md:hidden" dir={lang === "ar" ? "rtl" : "ltr"}
           style={{
             background: dark ? 'rgba(8,8,14,0.88)' : 'rgba(255,255,255,0.88)',
-            backdropFilter: 'blur(32px) saturate(200%)',
-            WebkitBackdropFilter: 'blur(32px) saturate(200%)',
+            backdropFilter: 'blur(16px) saturate(170%)',
+            WebkitBackdropFilter: 'blur(16px) saturate(170%)',
             borderBottom: `1px solid ${dark ? 'rgba(255,255,255,0.10)' : 'rgba(26,26,46,0.08)'}`,
           }}>
           {links.map(l => (

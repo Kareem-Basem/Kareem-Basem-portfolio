@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -10,31 +10,71 @@ import Contact from './components/Contact';
 import { ChevronUp } from 'lucide-react';
 
 function ScrollProgress() {
-  const [width, setWidth] = useState(0);
+  const barRef = useRef(null);
   useEffect(() => {
-    const fn = () => {
+    let frame = null;
+
+    const update = () => {
       const el = document.documentElement;
       const scrolled = el.scrollTop || document.body.scrollTop;
       const total = el.scrollHeight - el.clientHeight;
-      setWidth(total > 0 ? (scrolled / total) * 100 : 0);
+      if (barRef.current) {
+        const width = total > 0 ? (scrolled / total) * 100 : 0;
+        barRef.current.style.width = `${width}%`;
+      }
     };
-    window.addEventListener('scroll', fn, { passive: true });
-    return () => window.removeEventListener('scroll', fn);
+
+    const onScroll = () => {
+      if (frame !== null) return;
+      frame = requestAnimationFrame(() => {
+        frame = null;
+        update();
+      });
+    };
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+
+    return () => {
+      if (frame !== null) cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
   }, []);
-  return <div id="scroll-progress" style={{ width: `${width}%` }} />;
+  return <div id="scroll-progress" ref={barRef} />;
 }
 
 function BackToTop({ dark }) {
   const [vis, setVis] = useState(false);
   useEffect(() => {
-    const fn = () => setVis(window.scrollY > 400);
-    window.addEventListener('scroll', fn, { passive: true });
-    return () => window.removeEventListener('scroll', fn);
+    let frame = null;
+
+    const update = () => {
+      const nextVisible = window.scrollY > 400;
+      setVis(prev => (prev === nextVisible ? prev : nextVisible));
+    };
+
+    const onScroll = () => {
+      if (frame !== null) return;
+      frame = requestAnimationFrame(() => {
+        frame = null;
+        update();
+      });
+    };
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    return () => {
+      if (frame !== null) cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+    };
   }, []);
   const style = {
     background: dark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.80)',
     border: `1px solid ${dark ? 'rgba(255,255,255,0.15)' : 'rgba(26,26,46,0.14)'}`,
-    backdropFilter: 'blur(16px)',
+    backdropFilter: 'blur(10px)',
     color: '#f0a500',
     boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
   };

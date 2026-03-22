@@ -47,8 +47,9 @@ function ExpCard({ e, dark, lang, delay = 0 }) {
   const acc  = accentMap[e.type];
   const Icon = getIcon(e.org, e.type);
   return (
-    <GlassCard dark={dark} glow={acc.glow} className="reveal rounded-2xl float-card"
-      style={{ transitionDelay:`${delay}s`, borderTop:`3px solid ${acc.color}` }}>
+    <GlassCard dark={dark} glow={acc.glow} className="reveal rounded-2xl float-card overflow-hidden"
+      style={{ transitionDelay:`${delay}s` }}>
+      <div className="h-[3px] w-full" style={{ background: acc.stripe }} />
       <div className="p-5">
         {/* Top row */}
         <div className="flex items-start gap-3">

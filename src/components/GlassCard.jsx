@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { glass, glassHov } from '../utils/glass';
 
 /**
@@ -18,26 +18,28 @@ import { glass, glassHov } from '../utils/glass';
  */
 export default function GlassCard({ dark, glow, className = '', onClick, style = {}, children }) {
   const [hov, setHov] = useState(false);
-  const [pos, setPos] = useState({ x: 50, y: 50 });
+  const cardRef = useRef(null);
 
   const base  = glass(dark);
   const hover = glassHov(dark, glow || 'rgba(240,165,0,0.28)');
 
   const handleMove = (e) => {
     const r = e.currentTarget.getBoundingClientRect();
-    setPos({
-      x: ((e.clientX - r.left) / r.width  * 100).toFixed(1),
-      y: ((e.clientY - r.top)  / r.height * 100).toFixed(1),
-    });
+    if (!cardRef.current) return;
+    cardRef.current.style.setProperty('--glow-x', `${((e.clientX - r.left) / r.width * 100).toFixed(1)}%`);
+    cardRef.current.style.setProperty('--glow-y', `${((e.clientY - r.top) / r.height * 100).toFixed(1)}%`);
   };
 
   return (
     <div
+      ref={cardRef}
       className={`relative shimmer ${className}`}
       style={{
         ...(hov ? hover : base),
         transition: 'all 0.2s ease',
         cursor: onClick ? 'pointer' : 'default',
+        '--glow-x': '50%',
+        '--glow-y': '50%',
         ...style,
       }}
       onMouseEnter={() => setHov(true)}
@@ -50,7 +52,7 @@ export default function GlassCard({ dark, glow, className = '', onClick, style =
         className="absolute inset-0 pointer-events-none rounded-[inherit] transition-opacity duration-300"
         style={{
           opacity: hov ? 1 : 0,
-          background: `radial-gradient(circle at ${pos.x}% ${pos.y}%, ${glow || 'rgba(240,165,0,0.22)'}, transparent 60%)`,
+          background: `radial-gradient(circle at var(--glow-x) var(--glow-y), ${glow || 'rgba(240,165,0,0.22)'}, transparent 60%)`,
         }}
       />
 

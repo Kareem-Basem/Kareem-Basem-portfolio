@@ -9,8 +9,8 @@ export const INK    = '#1a1a2e';
 export const glass = (dark) => ({
   background:           dark ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.75)',
   border:               `1px solid ${dark ? 'rgba(255,255,255,0.14)' : 'rgba(26,26,46,0.14)'}`,
-  backdropFilter:       'blur(22px) saturate(160%)',
-  WebkitBackdropFilter: 'blur(22px) saturate(160%)',
+  backdropFilter:       'blur(12px) saturate(140%)',
+  WebkitBackdropFilter: 'blur(12px) saturate(140%)',
   boxShadow: dark
     ? '0 4px 20px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.07)'
     : '0 4px 20px rgba(26,26,46,0.08), inset 0 1px 0 rgba(255,255,255,0.95)',
@@ -20,8 +20,8 @@ export const glass = (dark) => ({
 export const glassHov = (dark, glow = AMBER + '44') => ({
   background:           dark ? 'rgba(255,255,255,0.09)' : 'rgba(255,255,255,0.90)',
   border:               `1px solid ${dark ? 'rgba(255,255,255,0.22)' : 'rgba(26,26,46,0.20)'}`,
-  backdropFilter:       'blur(22px) saturate(160%)',
-  WebkitBackdropFilter: 'blur(22px) saturate(160%)',
+  backdropFilter:       'blur(12px) saturate(140%)',
+  WebkitBackdropFilter: 'blur(12px) saturate(140%)',
   boxShadow:            `0 18px 50px ${glow}, inset 0 1px 0 rgba(255,255,255,${dark?'0.10':'0.98'})`,
   transform:            'translateY(-5px) scale(1.005)',
 });
