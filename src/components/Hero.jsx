@@ -23,7 +23,7 @@ function useCounter(target, duration = 1200, start = false, instant = false) {
       if (p < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
-  }, [target, duration, start]);
+  }, [target, duration, start, instant]);
   return val;
 }
 
@@ -41,7 +41,7 @@ export default function Hero() {
   const heroRef = useRef(null);
 
   useEffect(() => {
-    const media = window.matchMedia('(max-width: 768px), (pointer: coarse), (prefers-reduced-motion: reduce)');
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
     const sync = () => setCompactMotion(media.matches);
     sync();
     media.addEventListener?.('change', sync);

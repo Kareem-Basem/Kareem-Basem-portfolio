@@ -33,7 +33,7 @@ export default function GlassCard({ dark, glow, className = '', onClick, style =
   return (
     <div
       ref={cardRef}
-      className={`relative shimmer glass-surface ${className}`}
+      className={`relative shimmer ${className}`}
       style={{
         ...(hov ? hover : base),
         transition: 'all 0.2s ease',
