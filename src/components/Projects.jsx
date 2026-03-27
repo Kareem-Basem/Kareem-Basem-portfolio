@@ -240,13 +240,7 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
     return () => media.removeEventListener?.('change', sync);
   }, []);
 
-  useEffect(() => {
-    if (!hasCarousel || hov || reduceMotion.current) return;
-    const id = setInterval(() => {
-      goTo((pi + 1) % previewUrls.length);
-    }, 10000);
-    return () => clearInterval(id);
-  }, [hasCarousel, hov, pi, previewUrls]);
+  // Auto-rotate disabled (manual only)
 
   const gbg   = dark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.72)';
   const gbord = dark ? 'rgba(255,255,255,0.12)' : 'rgba(26,26,46,0.13)';
@@ -292,6 +286,12 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
               <span className="text-[.58rem] font-semibold px-2 py-0.5 rounded-full"
                 style={{ background:`${m.accent}22`, color:m.accent, border:`1px solid ${m.accent}38` }}>
                 {topLabel}
+              </span>
+            )}
+            {index === 1 && (
+              <span className="text-[.58rem] font-semibold px-2 py-0.5 rounded-full"
+                style={{ background:`${m.accent}16`, color:m.accent, border:`1px solid ${m.accent}30` }}>
+                Preview
               </span>
             )}
           </div>
@@ -347,9 +347,9 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
                   onClick={e => { e.stopPropagation(); onPreview?.(curPreview, p.title); }}
                   style={{
                     cursor: canPreview ? 'pointer' : 'default',
-                    transition: 'opacity 180ms ease, transform 220ms ease',
+                    transition: 'opacity 320ms ease, transform 320ms ease',
                     opacity: fading ? 0.25 : 1,
-                    transform: fading ? 'scale(0.985)' : 'scale(1)',
+                    transform: fading ? 'scale(0.99)' : 'scale(1)',
                   }}
                 />
               ) : (

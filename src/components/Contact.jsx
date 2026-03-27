@@ -5,19 +5,19 @@ import { contactLinks } from '../data/portfolioData';
 export default function Contact() {
   const { dark, lang } = useApp();
   const tr  = t[lang];
-  const bg  = dark ? '#0a0a10' : '#1a1a2e';
-  const ink = dark ? '#f0f0f8' : '#ffffff';
-  const sub = dark ? 'rgba(255,255,255,0.42)' : 'rgba(255,255,255,0.52)';
+  const bg  = dark ? '#0a0a10' : '#f6f3ee';
+  const ink = dark ? '#f0f0f8' : '#1c1b22';
+  const sub = dark ? 'rgba(255,255,255,0.42)' : 'rgba(28,27,34,0.65)';
 
   return (
     <>
       <section id="contact"
         style={{ background:bg }}
-        className="py-20 md:py-28 px-[5%] relative overflow-x-hidden transition-colors duration-300 cv-auto section-shell">
+        className="py-16 md:py-20 px-[5%] relative overflow-x-hidden transition-colors duration-300 cv-auto section-shell">
 
         {/* Ambient glow */}
         <div className="absolute pointer-events-none inset-0 flex items-center justify-center">
-          <div style={{ width:500, height:400, borderRadius:'50%', background:'radial-gradient(circle,rgba(240,165,0,0.07),transparent 70%)', flexShrink:0 }}/>
+          <div style={{ width:420, height:320, borderRadius:'50%', background:'radial-gradient(circle,rgba(240,165,0,0.08),transparent 70%)', flexShrink:0 }}/>
         </div>
 
         <div className="relative z-10 max-w-2xl">
@@ -48,20 +48,28 @@ export default function Contact() {
                 aria-label={l.label[lang] || l.label.en}
                 className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all hover:-translate-y-0.5"
                 style={{
-                  background: l.download ? 'rgba(240,165,0,0.10)' : 'rgba(255,255,255,0.07)',
-                  border: l.download ? '1.5px solid rgba(240,165,0,0.35)' : '1.5px solid rgba(255,255,255,0.15)',
-                  color: l.download ? '#f0a500' : 'rgba(255,255,255,0.65)',
-                  backdropFilter:'blur(12px)',
+                  background: l.download
+                    ? 'rgba(240,165,0,0.10)'
+                    : (dark ? 'rgba(255,255,255,0.07)' : 'rgba(255,255,255,0.65)'),
+                  border: l.download
+                    ? '1.5px solid rgba(240,165,0,0.35)'
+                    : (dark ? '1.5px solid rgba(255,255,255,0.15)' : '1.5px solid rgba(28,27,34,0.12)'),
+                  color: l.download ? '#f0a500' : (dark ? 'rgba(255,255,255,0.65)' : '#1c1b22'),
+                  backdropFilter:'blur(14px)',
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.borderColor = '#f0a500';
                   e.currentTarget.style.color = '#f0a500';
-                  e.currentTarget.style.background = 'rgba(240,165,0,0.10)';
+                  e.currentTarget.style.background = 'rgba(240,165,0,0.12)';
                 }}
                 onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = l.download ? 'rgba(240,165,0,0.35)' : 'rgba(255,255,255,0.15)';
-                  e.currentTarget.style.color = l.download ? '#f0a500' : 'rgba(255,255,255,0.65)';
-                  e.currentTarget.style.background = l.download ? 'rgba(240,165,0,0.10)' : 'rgba(255,255,255,0.07)';
+                  e.currentTarget.style.borderColor = l.download
+                    ? 'rgba(240,165,0,0.35)'
+                    : (dark ? 'rgba(255,255,255,0.15)' : 'rgba(28,27,34,0.12)');
+                  e.currentTarget.style.color = l.download ? '#f0a500' : (dark ? 'rgba(255,255,255,0.65)' : '#1c1b22');
+                  e.currentTarget.style.background = l.download
+                    ? 'rgba(240,165,0,0.10)'
+                    : (dark ? 'rgba(255,255,255,0.07)' : 'rgba(255,255,255,0.65)');
                 }}>
                 <l.Icon size={13}/>
                 <span className="truncate max-w-[140px] sm:max-w-none">{l.label[lang] || l.label.en}</span>
@@ -72,7 +80,7 @@ export default function Contact() {
       </section>
 
       <footer
-        style={{ background:dark?'#06060a':'#0d0d1a' }}
+        style={{ background:dark?'#06060a':'#efeae4' }}
         className="px-[5%] py-4 transition-colors duration-300">
         <div className="flex justify-between items-center">
           <span style={{
@@ -84,7 +92,7 @@ export default function Contact() {
           }}>
             Designed by KeMoO
           </span>
-          <span className="text-[.7rem]" style={{ color:'rgba(255,255,255,0.20)' }}>
+          <span className="text-[.7rem]" style={{ color:dark?'rgba(255,255,255,0.20)':'rgba(28,27,34,0.45)' }}>
             © {new Date().getFullYear()} Kareem Basem Fathi
           </span>
         </div>
