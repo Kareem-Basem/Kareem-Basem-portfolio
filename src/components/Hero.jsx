@@ -3,9 +3,7 @@ import { Mail, Github, Linkedin, BookOpen } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import t from '../i18n/translations';
 import { glass } from '../utils/glass';
-
-const phrasesEn = ['Cybersecurity Enthusiast','AI & Gen AI Practitioner','Web Developer','Network Enthusiast','MIS Student'];
-const phrasesAr = ['متحمس للأمن السيبراني','ممارس للذكاء الاصطناعي','مطور ويب','متحمس للشبكات','طالب نظم معلومات'];
+import { heroPhrases } from '../data/portfolioData';
 
 function useCounter(target, duration = 1200, start = false, instant = false) {
   const [val, setVal] = useState(0);
@@ -30,7 +28,7 @@ function useCounter(target, duration = 1200, start = false, instant = false) {
 export default function Hero() {
   const { dark, lang } = useApp();
   const tr = t[lang];
-  const phrases = lang === 'ar' ? phrasesAr : phrasesEn;
+  const phrases = heroPhrases[lang] || heroPhrases.en;
 
   const [text, setText] = useState('');
   const [pi, setPi]     = useState(0);
@@ -172,6 +170,7 @@ export default function Hero() {
               { href:'mailto:karemalwy1@gmail.com', Icon:Mail },
             ].map(({ href, Icon }, i) => (
               <a key={i} href={href} target={href.startsWith('http')?'_blank':undefined} rel="noreferrer"
+                aria-label={href.startsWith('mailto') ? 'Email' : href.includes('linkedin') ? 'LinkedIn' : 'GitHub'}
                 className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:-translate-y-0.5"
                 style={{ ...glass(dark), color:muted }}>
                 <Icon size={15}/>

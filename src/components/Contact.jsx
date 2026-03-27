@@ -1,15 +1,6 @@
-import { Mail, Linkedin, Github, Download } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import t from '../i18n/translations';
-
-const CV_PATH = process.env.PUBLIC_URL + '/assets/kareem-cv.pdf';
-
-const links = [
-  { href:'mailto:karemalwy1@gmail.com',             label:'karemalwy1@gmail.com', Icon:Mail,     download:undefined },
-  { href:'https://www.linkedin.com/in/karem-basem', label:'LinkedIn',             Icon:Linkedin, download:undefined },
-  { href:'https://github.com/Kareem-Basem',          label:'GitHub',               Icon:Github,   download:undefined },
-  { href: CV_PATH,                                   label:'Download CV',           Icon:Download, download:'Kareem_Basem_CV.pdf' },
-];
+import { contactLinks } from '../data/portfolioData';
 
 export default function Contact() {
   const { dark, lang } = useApp();
@@ -22,7 +13,7 @@ export default function Contact() {
     <>
       <section id="contact"
         style={{ background:bg }}
-        className="py-20 md:py-28 px-[5%] relative overflow-x-hidden transition-colors duration-300">
+        className="py-20 md:py-28 px-[5%] relative overflow-x-hidden transition-colors duration-300 cv-auto section-shell">
 
         {/* Ambient glow */}
         <div className="absolute pointer-events-none inset-0 flex items-center justify-center">
@@ -47,13 +38,14 @@ export default function Contact() {
           </p>
 
           {/* Links — wrap nicely on mobile */}
-          <div className="reveal d3 flex flex-wrap gap-2">
-            {links.map((l) => (
-              <a key={l.label}
+        <div className="reveal d3 flex flex-wrap gap-2">
+            {contactLinks.map((l) => (
+              <a key={l.href}
                 href={l.href}
                 target={l.href.startsWith('http') ? '_blank' : undefined}
                 rel="noreferrer"
                 download={l.download}
+                aria-label={l.label[lang] || l.label.en}
                 className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all hover:-translate-y-0.5"
                 style={{
                   background: l.download ? 'rgba(240,165,0,0.10)' : 'rgba(255,255,255,0.07)',
@@ -72,7 +64,7 @@ export default function Contact() {
                   e.currentTarget.style.background = l.download ? 'rgba(240,165,0,0.10)' : 'rgba(255,255,255,0.07)';
                 }}>
                 <l.Icon size={13}/>
-                <span className="truncate max-w-[140px] sm:max-w-none">{l.label}</span>
+                <span className="truncate max-w-[140px] sm:max-w-none">{l.label[lang] || l.label.en}</span>
               </a>
             ))}
           </div>
@@ -93,7 +85,7 @@ export default function Contact() {
             Designed by KeMoO
           </span>
           <span className="text-[.7rem]" style={{ color:'rgba(255,255,255,0.20)' }}>
-            © 2025 Kareem Basem Fathi
+            © {new Date().getFullYear()} Kareem Basem Fathi
           </span>
         </div>
       </footer>

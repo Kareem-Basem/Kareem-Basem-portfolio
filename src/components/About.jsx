@@ -20,7 +20,7 @@ export default function About() {
   ];
 
   return (
-    <section id="about" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300 overflow-x-hidden">
+    <section id="about" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300 overflow-x-hidden cv-auto section-shell">
       <SectionHeader tag={tr.aboutTag} title={tr.aboutTitle}/>
       {/* Stack on mobile, side by side on desktop */}
       <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-start">

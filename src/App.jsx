@@ -4,10 +4,13 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
 import Projects from './components/Projects';
+import Testimonials from './components/Testimonials';
 import Experience from './components/Experience';
 import Certs from './components/Certs';
 import Contact from './components/Contact';
 import { ChevronUp } from 'lucide-react';
+import { projectLinks } from './data/portfolioData';
+import t from './i18n/translations';
 
 function ScrollProgress() {
   const barRef = useRef(null);
@@ -74,7 +77,7 @@ function BackToTop({ dark }) {
   const style = {
     background: dark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.80)',
     border: `1px solid ${dark ? 'rgba(255,255,255,0.15)' : 'rgba(26,26,46,0.14)'}`,
-    backdropFilter: 'blur(10px)',
+    backdropFilter: 'blur(var(--btn-blur,10px))',
     color: '#f0a500',
     boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
   };
@@ -94,6 +97,18 @@ function BackToTop({ dark }) {
 
 function Inner() {
   const { dark, lang } = useApp();
+  const meta = {
+    en: {
+      title: 'Kareem Basem Fathi — Cybersecurity & AI Portfolio',
+      description:
+        'MIS Student at Sadat Academy. Passionate about Cybersecurity, AI, Networking & Web Development. Google Cybersecurity Certificate in progress.',
+    },
+    ar: {
+      title: 'كريم باسم فتحي — بورتفوليو الأمن السيبراني والذكاء الاصطناعي',
+      description:
+        'طالب نظم معلومات إدارية في أكاديمية السادات. مهتم بالأمن السيبراني والذكاء الاصطناعي والشبكات وتطوير الويب. شهادة الأمن السيبراني من Google قيد الدراسة.',
+    },
+  };
 
   useEffect(() => {
     if (dark) {
@@ -114,6 +129,60 @@ function Inner() {
     requestAnimationFrame(() => {
       document.documentElement.style.transition = '';
     });
+  }, [lang]);
+
+  useEffect(() => {
+    const m = meta[lang] || meta.en;
+    document.title = m.title;
+    const setMeta = (attr, key, value) => {
+      const el = document.querySelector(`meta[${attr}="${key}"]`);
+      if (el) el.setAttribute('content', value);
+    };
+    setMeta('name', 'description', m.description);
+    setMeta('property', 'og:title', m.title);
+    setMeta('property', 'og:description', m.description);
+    setMeta('name', 'twitter:title', m.title);
+    setMeta('name', 'twitter:description', m.description);
+  }, [lang]);
+
+  useEffect(() => {
+    const projects = t[lang]?.projects || t.en.projects;
+    const list = projects.map((p, i) => {
+      const url = i === 0 ? projectLinks.live.examor
+        : i === 1 ? projectLinks.live.vision
+        : null;
+      const sameAs = i === 1 ? projectLinks.github.vision
+        : i === 2 ? projectLinks.github.vc
+        : i === 3 ? projectLinks.github.sa
+        : null;
+      const item = {
+        "@type": "CreativeWork",
+        "name": p.title,
+        "description": p.desc,
+      };
+      if (url) item.url = url;
+      if (sameAs) item.sameAs = [sameAs];
+      return {
+        "@type": "ListItem",
+        "position": i + 1,
+        "item": item,
+      };
+    });
+    const data = {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Projects",
+      "itemListElement": list,
+    };
+    const id = 'ld-projects';
+    let script = document.getElementById(id);
+    if (!script) {
+      script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.id = id;
+      document.head.appendChild(script);
+    }
+    script.text = JSON.stringify(data);
   }, [lang]);
 
   useEffect(() => {
@@ -149,6 +218,7 @@ function Inner() {
       <Hero />
       <About />
       <Projects />
+      <Testimonials />
       <Experience />
       <Certs />
       <Contact />

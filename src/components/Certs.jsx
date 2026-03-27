@@ -1,55 +1,11 @@
 import { useLayoutEffect, useRef, useState } from 'react';
-import { ChevronDown, Shield, Brain, Globe, BarChart2, Network } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import SectionHeader from './SectionHeader';
 import GlassCard from './GlassCard';
 import { useApp } from '../context/AppContext';
 import t from '../i18n/translations';
 import { ink, muted, faint } from '../utils/glass';
-
-const groups = [
-  { key:'cyber', icon:<Shield size={15}/>, accent:'#2a9d8f', glow:'rgba(42,157,143,0.25)',
-    certs:[
-      { org:'Google / Coursera', name:'Foundations of Cybersecurity',               date:'Dec 2025', img:'/assets/certs/google_cyber_1_foundations.jpg'  },
-      { org:'Google / Coursera', name:'Play It Safe: Manage Security Risks',         date:'Feb 2026', img:'/assets/certs/google_cyber_2_security_risks.jpg'},
-      { org:'Google / Coursera', name:'Connect & Protect: Networks & Security',      date:'Mar 2026', img:'/assets/certs/google_cyber_3_networks.jpg'      },
-      { org:'Google / Coursera', name:'Tools of the Trade: Linux and SQL',           date:'Mar 2026', img:'/assets/certs/google_cyber_4_linux_sql.jpg'     },
-      { org:'Google / Coursera', name:'Assets, Threats, and Vulnerabilities',        date:'Mar 2026', img:'/assets/certs/google_cyber_5_assets.jpg'        },
-      { org:'Google / Coursera', name:'Sound the Alarm: Detection & Response',       badge:'🔄 6/9', img:null },
-      { org:'Sprints × Microsoft', name:'Cybersecurity Summer Camp (40 hrs)',         date:'2024',    img:'/assets/certs/sprints_microsoft.jpg' },
-      { org:'HP LIFE',             name:'Cybersecurity Awareness',                    img:'/assets/certs/hp_cybersecurity.jpg' },
-    ]},
-  { key:'ai', icon:<Brain size={15}/>, accent:'#f0a500', glow:'rgba(240,165,0,0.25)',
-    certs:[
-      { org:'NVIDIA Academy',       name:'AI for All: From Basics to GenAI',          date:'Jan 2026', img:'/assets/certs/nvidia_genai.jpg'          },
-      { org:'NVIDIA Academy',       name:'Building LLM Apps with Prompt Engineering', date:'Feb 2026', img:'/assets/certs/nvidia_llm.jpg'            },
-      { org:'IBM / Coursera',       name:'Introduction to Artificial Intelligence',   date:'Feb 2025', img:'/assets/certs/ibm_intro_ai.jpg'          },
-      { org:'IBM / Coursera',       name:'Delivering Quality Work with Agility',      date:'Jan 2026', img:'/assets/certs/ibm_agility.jpg'           },
-      { org:'Dubai Future Foundation', name:'AI Prompt Engineering — 1M Prompters',  img:'/assets/certs/dubai-ai.jpg'     },
-      { org:'HP LIFE',              name:'Data Science & Analytics',                  img:'/assets/certs/hp_data_science.jpg' },
-    ]},
-  { key:'net', icon:<Network size={15}/>, accent:'#4d8fff', glow:'rgba(77,143,255,0.25)',
-    certs:[
-      { org:'Cisco Networking Academy', name:'Networking Basics', date:'Jul 2025', img:'/assets/certs/cisco_networking.jpg' },
-    ]},
-  { key:'digital', icon:<Globe size={15}/>, accent:'#e76f51', glow:'rgba(231,111,81,0.25)',
-    certs:[
-      { org:'Google',               name:'Digital Marketing Fundamentals',         img:'/assets/certs/google_digital_mktg.jpg' },
-      { org:'Banque Misr × Google', name:'Maharat min Google — Digital Marketing', img:'/assets/certs/banque_misr_training.jpg'      },
-      { org:'HP LIFE',              name:'Digital Business Skills',                img:'/assets/certs/hp_digital_business.jpg' },
-    ]},
-  { key:'tech', icon:<BarChart2 size={15}/>, accent:'#a855f7', glow:'rgba(168,85,247,0.25)',
-    certs:[
-      { org:'Meta / Coursera',   name:'Introduction to Data Analytics', date:'Sep 2024', img:'/assets/certs/meta_data_analytics.jpg'   },
-      { org:'ITI Mahara-Tech',   name:'Python Programming Basics',       date:'Nov 2025', img:'/assets/certs/iti_python.jpg'            },
-      { org:'EYouth Learning',   name:'Blockchain Technology',           img:'/assets/certs/eyouth.jpg'               },
-      { org:'LinkedIn Learning', name:'Sustainability Foundations',       date:'Aug 2025', img:'/assets/certs/linkedin_sustainability.jpg'},
-    ]},
-];
-
-const labels = {
-  en:{ cyber:'Cybersecurity — Google 6/9 🔄', ai:'AI & Gen AI', net:'Networking', digital:'Digital & Marketing', tech:'Tech & Other' },
-  ar:{ cyber:'الأمن السيبراني — Google 6/9 🔄', ai:'الذكاء الاصطناعي', net:'الشبكات', digital:'التسويق الرقمي', tech:'التقنية وغيرها' },
-};
+import { certGroups, certLabels } from '../data/portfolioData';
 
 function CertRow({ c, accent, glow, dark }) {
   const [exp, setExp] = useState(false);
@@ -112,7 +68,7 @@ export default function Certs() {
   const tr   = t[lang];
   const [open, setOpen] = useState(0);
   const bg   = dark ? '#13131e' : '#f5f0e8';
-  const lbl  = labels[lang];
+  const lbl  = certLabels[lang] || certLabels.en;
   const groupRefs = useRef({});
   const previousGroupTopRef = useRef(null);
   const previousGroupIndexRef = useRef(null);
@@ -148,15 +104,16 @@ export default function Certs() {
   };
 
   return (
-    <section id="certs" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300 overflow-x-hidden">
+    <section id="certs" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300 overflow-x-hidden cv-auto section-shell">
       <SectionHeader tag={tr.certsTag} title={tr.certsTitle}/>
       <p className="text-sm mb-8 -mt-6" style={{ color:faint(dark) }}>
         {lang==='ar' ? 'اضغط الفئة لتوسيعها · اضغط الشهادة لعرض صورتها' : 'Click category to expand · Click cert to preview'}
       </p>
 
       <div className="flex flex-col gap-2.5 w-full max-w-3xl stagger" style={{ overflowAnchor: 'none' }}>
-        {groups.map((g, gi) => {
+        {certGroups.map((g, gi) => {
           const isOpen = open===gi;
+          const Icon = g.icon;
           return (
             <div
               key={gi}
@@ -171,7 +128,7 @@ export default function Certs() {
                 <div className="px-5 py-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <span style={{ color:isOpen?g.accent:muted(dark) }}>{g.icon}</span>
+                      <span style={{ color:isOpen?g.accent:muted(dark) }}><Icon size={15}/></span>
                       <span className="font-semibold text-sm" style={{ color:isOpen?g.accent:ink(dark) }}>{lbl[g.key]}</span>
                       <span className="text-xs opacity-45" style={{ color:muted(dark) }}>({g.certs.length})</span>
                     </div>

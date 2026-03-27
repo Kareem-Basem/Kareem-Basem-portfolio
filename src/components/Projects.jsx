@@ -1,156 +1,48 @@
-import { useState } from 'react';
-import {
-  Shield, Library, Gamepad2, Database, Leaf,
-  ArrowUpRight, X, CheckCircle2, Circle, Server,
-  Monitor, Volume2, Car, Cpu, FileText, Github, ExternalLink
-} from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowUpRight, X, CheckCircle2, Circle, Server, FileText, Github, ExternalLink } from 'lucide-react';
 import SectionHeader from './SectionHeader';
 import { useApp } from '../context/AppContext';
 import t from '../i18n/translations';
-
-/* ─── Accent palette per project ─── */
-const meta = [
-  { Icon: Shield,   accent:'#2a9d8f', glow:'rgba(42,157,143,0.28)'  },
-  { Icon: Library,  accent:'#4d8fff', glow:'rgba(77,143,255,0.25)'  },
-  { Icon: Gamepad2, accent:'#f0a500', glow:'rgba(240,165,0,0.28)'   },
-  { Icon: Gamepad2, accent:'#e05c2e', glow:'rgba(224,92,46,0.28)'   },
-  { Icon: Database, accent:'#a855f7', glow:'rgba(168,85,247,0.25)'  },
-  { Icon: Leaf,     accent:'#e76f51', glow:'rgba(231,111,81,0.25)'  },
-];
-
-const chipsEn = [
-  ['React','Node.js','SQL Server','JWT'],
-  ['HTML','CSS','JavaScript'],
-  ['Graphics','Vehicles','Sound'],
-  ['Graphics','Vehicles','Sound'],
-  ['MS Access','Relational DB','Team ×4'],
-  ['ESG','Strategy','Forage'],
-];
-const chipsAr = [
-  ['React','Node.js','SQL Server','JWT'],
-  ['HTML','CSS','JavaScript'],
-  ['رسومات','سيارات','صوت'],
-  ['رسومات','سيارات','صوت'],
-  ['MS Access','قاعدة بيانات','فريق ×4'],
-  ['الاستدامة','استراتيجية','Forage'],
-];
-
-/* ─── Examor modal ─── */
-const examorFeaturesEn = [
-  { done:true,  text:'Role system: Admin / Doctor / Student' },
-  { done:true,  text:'MCQ, True/False, Essay question types' },
-  { done:true,  text:'Auto-grading for MCQ & True/False' },
-  { done:true,  text:'Unique exam code per exam' },
-  { done:true,  text:'JWT auth + bcrypt password hashing' },
-  { done:true,  text:'SQL Injection protection' },
-  { done:true,  text:'20+ REST API endpoints' },
-  { done:true,  text:'Countdown timer with auto-submit' },
-  { done:false, text:'Frontend dashboards (in progress)' },
-  { done:false, text:'Deploy on Vercel / Render' },
-];
-const examorFeaturesAr = [
-  { done:true,  text:'نظام أدوار: Admin / Doctor / Student' },
-  { done:true,  text:'MCQ + صح/خطأ + مقالي' },
-  { done:true,  text:'تصحيح تلقائي للأسئلة الموضوعية' },
-  { done:true,  text:'كود فريد لكل امتحان' },
-  { done:true,  text:'JWT + bcrypt لحماية كلمات المرور' },
-  { done:true,  text:'حماية من SQL Injection' },
-  { done:true,  text:'+20 API endpoint' },
-  { done:true,  text:'عداد تنازلي مع تسليم تلقائي' },
-  { done:false, text:'لوحات التحكم (قيد التطوير)' },
-  { done:false, text:'Deploy على Vercel / Render' },
-];
-
-/* ─── GTA Vice City modal data ─── */
-const vcData = {
-  github: 'https://github.com/Kareem-Basem/GTA-Vice-City-KeMoO-Edition',
-  en: {
-    title: 'GTA: Vice City — KeMoO Edition v.3',
-    icon: '/assets/gta-vc-icon.png',
-    docImg: '/assets/gta-vc-doc.jpg',
-    era: '1980s Atmosphere',
-    accentColor: '#f0a500',
-    features: [
-      { Icon: Monitor, label:'Graphics',  text:'Fully upgraded textures to modern standards, realistic environment.' },
-      { Icon: Car,     label:'Vehicles',  text:'All vehicles replaced with authentic 1980s models.' },
-      { Icon: Volume2, label:'Audio',     text:'Complete soundtrack & environmental sound overhaul.' },
-      { Icon: Cpu,     label:'Engine',    text:'Refined movement mechanics, bug-free stable performance.' },
-    ],
-    sysReq: {
-      min:  'Core i5 2400 · 8GB RAM · GTX 710 · 6GB',
-      rec:  'Core i5 3470 · 16GB RAM · GTX 1050 · 6GB',
-    },
-    note: '© 2024 KeMoO Interactive — Unofficial mod, not endorsed by Rockstar.',
-  },
-  ar: {
-    title: 'GTA: Vice City — إصدار KeMoO v.3',
-    icon: '/assets/gta-vc-icon.png',
-    docImg: '/assets/gta-vc-doc.jpg',
-    era: 'أجواء الثمانينيات',
-    accentColor: '#f0a500',
-    features: [
-      { Icon: Monitor, label:'الرسومات',  text:'ترقية شاملة للـ textures لمعايير حديثة.' },
-      { Icon: Car,     label:'السيارات',  text:'استبدال كامل بموديلات أصيلة من الثمانينيات.' },
-      { Icon: Volume2, label:'الصوت',     text:'إعادة تصميم كاملة للموسيقى والمؤثرات الصوتية.' },
-      { Icon: Cpu,     label:'المحرك',    text:'تحسين ميكانيكيات الحركة، أداء مستقر.' },
-    ],
-    sysReq: {
-      min: 'Core i5 2400 · 8GB RAM · GTX 710 · 6GB',
-      rec: 'Core i5 3470 · 16GB RAM · GTX 1050 · 6GB',
-    },
-    note: '© 2024 KeMoO Interactive — تعديل غير رسمي، غير معتمد من Rockstar.',
-  },
-};
-
-/* ─── GTA San Andreas modal data ─── */
-const saData = {
-  github: 'https://github.com/Kareem-Basem/GTA-San-Andreas-KeMoO-Edition',
-  en: {
-    title: 'GTA: San Andreas — KeMoO Edition v.3',
-    icon: '/assets/gta-sa-icon.png',
-    docImg: '/assets/gta-sa-doc.jpg',
-    era: '1990s Spirit',
-    accentColor: '#e05c2e',
-    features: [
-      { Icon: Monitor, label:'Graphics',  text:'Modern textures with 90s aesthetics, up to 4K resolution support.' },
-      { Icon: Car,     label:'Vehicles',  text:'New & redesigned vehicles capturing the 90s vibe, enhanced AI.' },
-      { Icon: Volume2, label:'Audio',     text:'Full sound overhaul including environmental effects & soundtrack.' },
-      { Icon: Cpu,     label:'Engine',    text:'Improved movement mechanics, weather/lighting/shadow updates.' },
-    ],
-    sysReq: {
-      min: 'Core i5 3470 · 8GB RAM · GTX 660 · 20GB',
-      rec: 'Core i7 4790 · 16GB RAM · GTX 1050 · 20GB',
-    },
-    note: '© 2024 KeMoO Interactive — Unofficial mod, not endorsed by Rockstar.',
-  },
-  ar: {
-    title: 'GTA: San Andreas — إصدار KeMoO v.3',
-    icon: '/assets/gta-sa-icon.png',
-    docImg: '/assets/gta-sa-doc.jpg',
-    era: 'روح التسعينيات',
-    accentColor: '#e05c2e',
-    features: [
-      { Icon: Monitor, label:'الرسومات',  text:'تكسچر حديثة بأجواء التسعينيات، دعم حتى دقة 4K.' },
-      { Icon: Car,     label:'السيارات',  text:'سيارات جديدة بروح التسعينيات، تحسين الذكاء الاصطناعي.' },
-      { Icon: Volume2, label:'الصوت',     text:'إعادة تصميم كاملة للصوتيات والموسيقى والمؤثرات.' },
-      { Icon: Cpu,     label:'المحرك',    text:'تحسين الحركة، تحديث الطقس والإضاءة والظلال.' },
-    ],
-    sysReq: {
-      min: 'Core i5 3470 · 8GB RAM · GTX 660 · 20GB',
-      rec: 'Core i7 4790 · 16GB RAM · GTX 1050 · 20GB',
-    },
-    note: '© 2024 KeMoO Interactive — تعديل غير رسمي، غير معتمد من Rockstar.',
-  },
-};
+import {
+  projectMeta,
+  projectChips,
+  examorFeatures,
+  gtaData,
+  projectLinks,
+  projectPreviews,
+} from '../data/portfolioData';
 
 /* ─── Modal wrapper ─── */
-function Modal({ onClose, dark, children }) {
+function Modal({ onClose, dark, ariaLabel, children }) {
   const overlay = dark ? 'rgba(0,0,0,0.7)' : 'rgba(0,0,0,0.5)';
+  const dialogRef = useRef(null);
+
+  useEffect(() => {
+    const onKey = e => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    dialogRef.current?.focus();
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [onClose]);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto"
       style={{ background: overlay, backdropFilter:'blur(8px)' }}
       onClick={onClose}>
-      <div className="relative w-full max-w-lg my-4" onClick={e => e.stopPropagation()}
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={ariaLabel}
+        tabIndex={-1}
+        className="relative w-full max-w-lg my-4 outline-none"
+        onClick={e => e.stopPropagation()}
         style={{ animation:'fadeUp .25s ease both' }}>
         {children}
       </div>
@@ -160,23 +52,29 @@ function Modal({ onClose, dark, children }) {
 
 /* ─── Examor Modal ─── */
 function ExamorModal({ onClose, dark, lang }) {
-  const features = lang==='ar' ? examorFeaturesAr : examorFeaturesEn;
+  const features = examorFeatures[lang] || examorFeatures.en;
   const bg    = dark ? 'rgba(19,19,30,0.97)' : 'rgba(255,255,255,0.97)';
   const bord  = dark ? 'rgba(255,255,255,0.12)' : 'rgba(26,26,46,0.12)';
   const ink   = dark ? '#f0f0f8' : '#1a1a2e';
   const muted = dark ? 'rgba(255,255,255,0.5)' : '#8a8a9a';
   return (
-    <Modal onClose={onClose} dark={dark}>
+    <Modal onClose={onClose} dark={dark} ariaLabel="Examor project details">
       <div className="rounded-2xl p-6 shadow-2xl"
         style={{ background:bg, border:`1px solid ${bord}`, backdropFilter:'blur(14px)' }}>
-        <button onClick={onClose} className="absolute top-4 right-4 transition-colors hover:text-amber" style={{ color:muted }}><X size={18}/></button>
+        <button
+          onClick={onClose}
+          aria-label="Close modal"
+          className="absolute top-4 right-4 transition-colors hover:text-amber"
+          style={{ color:muted }}>
+          <X size={18}/>
+        </button>
         <div className="flex items-center gap-3 mb-4">
           <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background:'rgba(42,157,143,0.12)', color:'#2a9d8f' }}><Server size={16}/></div>
           <div>
             <p className="font-semibold" style={{ color:ink }}>Examor</p>
             <p className="text-[.65rem] font-mono" style={{ color:'#2a9d8f' }}>React · Node.js · SQL Server · JWT</p>
           </div>
-          <span className="ml-auto text-[.58rem] font-semibold px-2 py-0.5 rounded-full" style={{ background:'rgba(240,165,0,0.12)', color:'#e8920a', border:'1px solid rgba(240,165,0,0.25)' }}>🔄 In Progress</span>
+          <span className="ml-auto text-[.58rem] font-semibold px-2 py-0.5 rounded-full" style={{ background:'rgba(46,139,87,0.14)', color:'#2e8b57', border:'1px solid rgba(46,139,87,0.28)' }}>✅ Completed</span>
         </div>
         <div className="space-y-2.5">
           {features.map((f,i) => (
@@ -192,16 +90,20 @@ function ExamorModal({ onClose, dark, lang }) {
 }
 
 /* ─── GTA Modal (VC or SA) ─── */
-function GTAModal({ data, onClose, dark }) {
+function GTAModal({ data, github, onClose, dark }) {
   const bg    = dark ? 'rgba(15,15,20,0.97)' : 'rgba(255,255,255,0.97)';
   const bord  = dark ? 'rgba(255,255,255,0.12)' : 'rgba(26,26,46,0.12)';
   const ink   = dark ? '#f0f0f8' : '#1a1a2e';
   const muted = dark ? 'rgba(255,255,255,0.5)' : '#8a8a9a';
   const divider = dark ? 'rgba(255,255,255,0.08)' : 'rgba(26,26,46,0.08)';
   const ac    = data.accentColor;
+  const shots = Array.isArray(data.shots) ? data.shots : [];
+  const [si, setSi] = useState(0);
+  const hasShots = shots.length > 0;
+  const curShot = hasShots ? shots[si % shots.length] : null;
 
   return (
-    <Modal onClose={onClose} dark={dark}>
+    <Modal onClose={onClose} dark={dark} ariaLabel={`${data.title} details`}>
       <div className="rounded-2xl overflow-hidden shadow-2xl"
         style={{ background:bg, border:`1px solid ${bord}`, backdropFilter:'blur(14px)' }}>
 
@@ -209,12 +111,20 @@ function GTAModal({ data, onClose, dark }) {
         <div className="h-1" style={{ background:`linear-gradient(90deg,${ac},${ac}88)` }}/>
 
         <div className="p-6">
-          <button onClick={onClose} className="absolute top-5 right-5 transition-colors hover:text-amber" style={{ color:muted }}><X size={18}/></button>
+          <button
+            onClick={onClose}
+            aria-label="Close modal"
+            className="absolute top-5 right-5 transition-colors hover:text-amber"
+            style={{ color:muted }}>
+            <X size={18}/>
+          </button>
 
           {/* Title row */}
           <div className="flex items-center gap-3 mb-5">
             <img src={data.icon} alt="icon" className="w-10 h-10 rounded-xl object-contain"
               style={{ background:`${ac}15`, border:`1px solid ${ac}28`, padding:4 }}
+              loading="lazy"
+              decoding="async"
               onError={e => { e.target.style.display='none'; }}/>
             <div>
               <h3 className="font-serif-display text-lg tracking-tight leading-tight" style={{ color:ink }}>{data.title}</h3>
@@ -235,6 +145,47 @@ function GTAModal({ data, onClose, dark }) {
             ))}
           </div>
 
+          {/* Screenshot carousel */}
+          {hasShots && (
+            <div className="rounded-xl overflow-hidden mb-5" style={{ border:`1px solid ${divider}` }}>
+              <div className="relative">
+                <img
+                  src={curShot}
+                  alt={`${data.title} screenshot`}
+                  className="w-full object-cover max-h-[260px]"
+                  loading="lazy"
+                  decoding="async"
+                />
+                {shots.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      aria-label="Previous screenshot"
+                      onClick={() => setSi(v => (v - 1 + shots.length) % shots.length)}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full flex items-center justify-center"
+                      style={{ background:'rgba(0,0,0,0.35)', color:'#fff', border:'1px solid rgba(255,255,255,0.35)' }}>
+                      ‹
+                    </button>
+                    <button
+                      type="button"
+                      aria-label="Next screenshot"
+                      onClick={() => setSi(v => (v + 1) % shots.length)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full flex items-center justify-center"
+                      style={{ background:'rgba(0,0,0,0.35)', color:'#fff', border:'1px solid rgba(255,255,255,0.35)' }}>
+                      ›
+                    </button>
+                    <div className="absolute left-1/2 -translate-x-1/2 bottom-2 flex gap-1">
+                      {shots.map((_, i) => (
+                        <span key={i} className="block w-2 h-2 rounded-full"
+                          style={{ background: i === (si % shots.length) ? ac : 'rgba(255,255,255,0.6)' }} />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Sys req */}
           <div className="rounded-xl p-3 mb-4" style={{ background:dark?'rgba(255,255,255,0.04)':'rgba(26,26,46,0.04)', border:`1px solid ${divider}` }}>
             <p className="text-[.65rem] font-semibold tracking-wider uppercase mb-2" style={{ color:muted }}>System Requirements</p>
@@ -252,8 +203,8 @@ function GTAModal({ data, onClose, dark }) {
           <div className="flex items-center justify-between pt-3" style={{ borderTop:`1px solid ${divider}` }}>
             <p className="text-[.7rem] max-w-[60%]" style={{ color:muted }}>{data.note}</p>
             <div className="flex gap-2">
-              {data.github && (
-                <a href={data.github} target="_blank" rel="noreferrer"
+              {github && (
+                <a href={github} target="_blank" rel="noreferrer"
                   className="inline-flex items-center gap-1.5 text-[.72rem] font-semibold px-3 py-1.5 rounded-full transition-all hover:-translate-y-0.5"
                   style={{ background:'rgba(255,255,255,0.08)', color: dark?'#f0f0f8':'#1a1a2e', border:`1px solid ${dark?'rgba(255,255,255,0.15)':'rgba(26,26,46,0.15)'}` }}>
                   <Github size={12}/> GitHub
@@ -273,9 +224,21 @@ function GTAModal({ data, onClose, dark }) {
 }
 
 /* ─── Glass card ─── */
-function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liveUrl }) {
+function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liveUrl, previewUrls, onPreview, techLabel, topLabel }) {
   const [hov, setHov] = useState(false);
   const [pos, setPos] = useState({ x:50, y:50 });
+  const [pi, setPi] = useState(0);
+  const hasCarousel = Array.isArray(previewUrls) && previewUrls.length > 1;
+  const curPreview = Array.isArray(previewUrls) ? previewUrls[pi] : previewUrls;
+  const canPreview = Boolean(curPreview);
+
+  useEffect(() => {
+    if (!hasCarousel || hov) return;
+    const id = setInterval(() => {
+      setPi(v => (v + 1) % previewUrls.length);
+    }, 3000);
+    return () => clearInterval(id);
+  }, [hasCarousel, hov, previewUrls]);
 
   const gbg   = dark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.72)';
   const gbord = dark ? 'rgba(255,255,255,0.12)' : 'rgba(26,26,46,0.13)';
@@ -285,14 +248,15 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
   const delay = [0,.08,.15,.22,.29,.35][index]||0;
   const canClick = !!modalType;
 
+  const isTop = index < 2;
   return (
     <div className="relative rounded-2xl overflow-hidden flex flex-col float-card"
       style={{
         transitionDelay:`${delay}s`,
         background: gbg,
         border:`1px solid ${hov ? m.accent+'50' : gbord}`,
-        backdropFilter:'blur(12px) saturate(140%)',
-        WebkitBackdropFilter:'blur(12px) saturate(140%)',
+        backdropFilter:'blur(var(--glass-blur,12px)) saturate(var(--glass-sat,140%))',
+        WebkitBackdropFilter:'blur(var(--glass-blur,12px)) saturate(var(--glass-sat,140%))',
         boxShadow: hov
           ? `0 20px 55px ${m.glow}, inset 0 1px 0 rgba(255,255,255,${dark?'0.09':'0.92'})`
           : `0 3px 18px rgba(0,0,0,${dark?'0.22':'0.06'}), inset 0 1px 0 rgba(255,255,255,${dark?'0.06':'0.88'})`,
@@ -311,6 +275,12 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
       {/* Specular */}
       <div className="absolute top-0 left-4 right-4 h-px pointer-events-none"
         style={{ background:`linear-gradient(90deg,transparent,${dark?'rgba(255,255,255,0.16)':'rgba(255,255,255,0.95)'},transparent)` }}/>
+      {isTop && (
+        <div className="absolute top-3 left-3 text-[.58rem] font-semibold px-2 py-0.5 rounded-full"
+          style={{ background:`${m.accent}22`, color:m.accent, border:`1px solid ${m.accent}38` }}>
+          {topLabel}
+        </div>
+      )}
 
       <div className="relative z-10 p-5 sm:p-8 flex flex-col h-full">
         <div className="flex items-start justify-between mb-5">
@@ -325,7 +295,7 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
             </span>
           </div>
           {modalType === 'examor' && (
-            <span className="text-[.58rem] font-semibold px-2 py-0.5 rounded-full" style={{ background:'rgba(42,157,143,0.12)', color:'#2a9d8f', border:'1px solid rgba(42,157,143,0.25)' }}>🔄 In Progress</span>
+            <span className="text-[.58rem] font-semibold px-2 py-0.5 rounded-full" style={{ background:'rgba(46,139,87,0.14)', color:'#2e8b57', border:'1px solid rgba(46,139,87,0.28)' }}>✅ Completed</span>
           )}
           {(modalType === 'vc' || modalType === 'sa') && (
             <span className="text-[.58rem] font-semibold px-2 py-0.5 rounded-full" style={{ background:`${m.accent}12`, color:m.accent, border:`1px solid ${m.accent}28` }}>📄 Docs</span>
@@ -334,6 +304,89 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
 
         <h3 className="font-serif-display text-xl tracking-tight leading-snug mb-2" style={{ color:ink }}>{p.title}</h3>
         <p className="text-[.87rem] leading-[1.75] flex-1" style={{ color:muted }}>{p.desc}</p>
+
+        {/* Mini preview screen */}
+        <div className="mt-4 mb-2">
+          <div
+            className="relative rounded-xl overflow-hidden"
+            style={{
+              height: 64,
+              background: dark
+                ? 'linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))'
+                : 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.7))',
+              border: `1px solid ${dark ? 'rgba(255,255,255,0.12)' : 'rgba(26,26,46,0.12)'}`,
+              boxShadow: dark
+                ? 'inset 0 1px 0 rgba(255,255,255,0.06)'
+                : 'inset 0 1px 0 rgba(255,255,255,0.8)',
+            }}>
+            {curPreview ? (
+              <img
+                src={curPreview}
+                alt={`${p.title} preview`}
+                className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
+                onClick={e => { e.stopPropagation(); onPreview?.(curPreview, p.title); }}
+                style={{ cursor: canPreview ? 'pointer' : 'default' }}
+              />
+            ) : (
+              <>
+                <div style={{ height: 10, background: dark ? 'rgba(255,255,255,0.08)' : 'rgba(26,26,46,0.08)' }} />
+                <div className="flex gap-2 p-2">
+                  <div style={{ width: 22, height: 18, borderRadius: 4, background: `${m.accent}25` }} />
+                  <div style={{ flex: 1, height: 18, borderRadius: 4, background: dark ? 'rgba(255,255,255,0.06)' : 'rgba(26,26,46,0.06)' }} />
+                </div>
+                <div className="px-2 pb-2">
+                  <div style={{ height: 8, borderRadius: 4, background: dark ? 'rgba(255,255,255,0.05)' : 'rgba(26,26,46,0.05)' }} />
+                  <div style={{ height: 8, borderRadius: 4, marginTop: 6, width: '75%', background: dark ? 'rgba(255,255,255,0.05)' : 'rgba(26,26,46,0.05)' }} />
+                </div>
+              </>
+            )}
+            {liveUrl && (
+              <span
+                className="absolute top-2 right-2 text-[.58rem] font-semibold px-2 py-0.5 rounded-full"
+                style={{ background:`${m.accent}22`, color:m.accent, border:`1px solid ${m.accent}38` }}>
+                Live
+              </span>
+            )}
+            {canPreview && (
+              <button
+                type="button"
+                aria-label="View preview"
+                onClick={e => { e.stopPropagation(); onPreview?.(curPreview, p.title); }}
+                className="absolute left-2 top-2 text-[.58rem] font-semibold px-2 py-0.5 rounded-full"
+                style={{ background:'rgba(0,0,0,0.35)', color:'#fff', border:'1px solid rgba(255,255,255,0.35)' }}>
+                View
+              </button>
+            )}
+            {hasCarousel && (
+              <>
+                <button
+                  type="button"
+                  aria-label="Previous preview"
+                  onClick={e => { e.stopPropagation(); setPi(v => (v - 1 + previewUrls.length) % previewUrls.length); }}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full flex items-center justify-center"
+                  style={{ background:'rgba(0,0,0,0.35)', color:'#fff', border:'1px solid rgba(255,255,255,0.35)' }}>
+                  ‹
+                </button>
+                <button
+                  type="button"
+                  aria-label="Next preview"
+                  onClick={e => { e.stopPropagation(); setPi(v => (v + 1) % previewUrls.length); }}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full flex items-center justify-center"
+                  style={{ background:'rgba(0,0,0,0.35)', color:'#fff', border:'1px solid rgba(255,255,255,0.35)' }}>
+                  ›
+                </button>
+                <div className="absolute left-1/2 -translate-x-1/2 bottom-1 flex gap-1">
+                  {previewUrls.map((_, i) => (
+                    <span key={i} className="block w-1.5 h-1.5 rounded-full"
+                      style={{ background: i === pi ? '#f0a500' : 'rgba(255,255,255,0.6)' }} />
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
 
         {modalType === 'examor' && (
           <div className="flex gap-1.5 flex-wrap mt-3">
@@ -346,11 +399,16 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
 
         <div className="flex items-center justify-between mt-5 pt-4"
           style={{ borderTop:`1px solid ${dark?'rgba(255,255,255,0.07)':'rgba(26,26,46,0.07)'}` }}>
-          <div className="flex gap-1.5 flex-wrap">
+          <div className="flex flex-col gap-1.5">
+            <span className="text-[.6rem] font-semibold tracking-wider uppercase" style={{ color:muted }}>
+              {techLabel}
+            </span>
+            <div className="flex gap-1.5 flex-wrap">
             {chips.map(c => (
               <span key={c} className="text-[.67rem] font-medium px-2 py-0.5 rounded"
                 style={{ background:chip, border:`1px solid ${dark?'rgba(255,255,255,0.09)':'rgba(26,26,46,0.08)'}`, color:muted }}>{c}</span>
             ))}
+            </div>
           </div>
           <div className="flex items-center gap-1.5">
             {githubUrl && (
@@ -388,8 +446,11 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
 export default function Projects() {
   const { dark, lang } = useApp();
   const tr    = t[lang];
-  const chips = lang === 'ar' ? chipsAr : chipsEn;
+  const chips = projectChips[lang] || projectChips.en;
+  const techLabel = tr.techStack;
+  const topLabel = tr.topProject;
   const [modal, setModal] = useState(null); // 'examor' | 'vc' | 'sa' | null
+  const [lightbox, setLightbox] = useState(null); // { src, title }
   const bg = dark ? '#0f0f14' : '#fdfcf9';
 
   // Map project index → modal type
@@ -397,23 +458,53 @@ export default function Projects() {
 
   return (
     <>
-      <section id="projects" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300 overflow-x-hidden">
+      <section id="projects" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300 overflow-x-hidden cv-auto section-shell">
         <SectionHeader tag={tr.projTag} title={tr.projTitle}/>
         <div className="grid md:grid-cols-2 gap-5 stagger">
           {tr.projects.map((p, i) => (
-            <GlassCard key={i} p={p} m={meta[i]} chips={chips[i]} index={i}
+            <GlassCard key={i} p={p} m={projectMeta[i]} chips={chips[i]} index={i}
               modalType={modalTypes[i]} dark={dark}
               onOpen={() => setModal(modalTypes[i])}
-              githubUrl={i === 1 ? 'https://github.com/Kareem-Basem/vision-library' : i === 2 ? 'https://github.com/Kareem-Basem/GTA-Vice-City-KeMoO-Edition' : i === 3 ? 'https://github.com/Kareem-Basem/GTA-San-Andreas-KeMoO-Edition' : null}
-              liveUrl={i === 1 ? 'https://kareem-basem.github.io/vision-library/index.html' : null}
+              githubUrl={i === 1 ? projectLinks.github.vision : i === 2 ? projectLinks.github.vc : i === 3 ? projectLinks.github.sa : null}
+              liveUrl={i === 0 ? projectLinks.live.examor : i === 1 ? projectLinks.live.vision : null}
+              previewUrls={projectPreviews[i] || null}
+              onPreview={(src, title) => setLightbox({ src, title })}
+              techLabel={techLabel}
+              topLabel={topLabel}
             />
           ))}
         </div>
       </section>
 
       {modal === 'examor' && <ExamorModal onClose={() => setModal(null)} dark={dark} lang={lang}/>}
-      {modal === 'vc'     && <GTAModal data={vcData[lang]} onClose={() => setModal(null)} dark={dark}/>}
-      {modal === 'sa'     && <GTAModal data={saData[lang]} onClose={() => setModal(null)} dark={dark}/>}
+      {modal === 'vc'     && <GTAModal data={gtaData.vc[lang]} github={gtaData.vc.github} onClose={() => setModal(null)} dark={dark}/>}
+      {modal === 'sa'     && <GTAModal data={gtaData.sa[lang]} github={gtaData.sa.github} onClose={() => setModal(null)} dark={dark}/>}
+      {lightbox && (
+        <Modal onClose={() => setLightbox(null)} dark={dark} ariaLabel={`${lightbox.title} preview`}>
+          <div className="rounded-2xl overflow-hidden shadow-2xl"
+            style={{ background: dark ? 'rgba(15,15,20,0.97)' : 'rgba(255,255,255,0.98)', border:`1px solid ${dark?'rgba(255,255,255,0.12)':'rgba(26,26,46,0.12)'}` }}>
+            <div className="flex items-center justify-between px-4 py-3"
+              style={{ borderBottom:`1px solid ${dark?'rgba(255,255,255,0.08)':'rgba(26,26,46,0.08)'}` }}>
+              <span className="text-sm font-semibold" style={{ color: dark ? '#f0f0f8' : '#1a1a2e' }}>
+                {lightbox.title}
+              </span>
+              <button onClick={() => setLightbox(null)} aria-label="Close preview"
+                className="text-sm px-2 py-1 rounded-lg"
+                style={{ color: dark ? 'rgba(255,255,255,0.7)' : 'rgba(26,26,46,0.7)' }}>
+                Close
+              </button>
+            </div>
+            <img
+              src={lightbox.src}
+              alt={`${lightbox.title} preview`}
+              className="w-full object-contain max-h-[70vh]"
+              loading="lazy"
+              decoding="async"
+              style={{ maxWidth: 1200, margin: '0 auto' }}
+            />
+          </div>
+        </Modal>
+      )}
     </>
   );
 }

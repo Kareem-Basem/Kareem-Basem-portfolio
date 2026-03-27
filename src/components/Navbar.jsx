@@ -13,6 +13,7 @@ export default function Navbar() {
   const links = [
     { id:'about',      label: tr.about },
     { id:'projects',   label: tr.projectsNav },
+    { id:'testimonials', label: tr.testimonialsNav },
     { id:'experience', label: tr.experience },
     { id:'certs',      label: tr.certs },
     { id:'contact',    label: tr.contact },
@@ -74,8 +75,8 @@ export default function Navbar() {
     background: dark
       ? 'rgba(8,8,14,0.55)'
       : 'rgba(255,255,255,0.45)',
-    backdropFilter: 'blur(18px) saturate(180%) brightness(1.04)',
-    WebkitBackdropFilter: 'blur(18px) saturate(180%) brightness(1.04)',
+    backdropFilter: 'blur(var(--nav-blur,18px)) saturate(var(--nav-sat,180%)) brightness(1.04)',
+    WebkitBackdropFilter: 'blur(var(--nav-blur,18px)) saturate(var(--nav-sat,180%)) brightness(1.04)',
     borderBottom: `1px solid ${dark
       ? 'rgba(255,255,255,0.12)'
       : 'rgba(255,255,255,0.95)'}`,
@@ -104,7 +105,8 @@ export default function Navbar() {
           <li key={l.id}>
             <a href={`#${l.id}`}
               className="text-sm font-medium transition-colors duration-200 nav-link"
-              style={lc(l.id)}>
+              style={lc(l.id)}
+              aria-current={active === l.id ? 'location' : undefined}>
               {l.label}
             </a>
           </li>
@@ -118,11 +120,12 @@ export default function Navbar() {
         <button
           onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
           className="px-3 py-1.5 rounded-full text-xs font-semibold border transition-all hover:border-amber hover:text-amber"
+          aria-label={lang === 'en' ? 'Switch language to Arabic' : 'Switch language to English'}
           style={{
             borderColor: dark ? 'rgba(255,255,255,0.14)' : 'rgba(26,26,46,0.14)',
             color: muted,
             background: dark ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.6)',
-            backdropFilter: 'blur(6px)',
+            backdropFilter: 'blur(var(--btn-blur,6px))',
           }}>
           {lang === 'en' ? 'ع' : 'EN'}
         </button>
@@ -131,11 +134,12 @@ export default function Navbar() {
         <button
           onClick={() => setDark(!dark)}
           className="w-9 h-9 rounded-full border flex items-center justify-center transition-all hover:border-amber"
+          aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
           style={{
             borderColor: dark ? 'rgba(255,255,255,0.14)' : 'rgba(26,26,46,0.14)',
             color: dark ? '#f0a500' : muted,
             background: dark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.6)',
-            backdropFilter: 'blur(6px)',
+            backdropFilter: 'blur(var(--btn-blur,6px))',
           }}>
           {dark ? <Sun size={15}/> : <Moon size={15}/>}
         </button>
@@ -148,7 +152,7 @@ export default function Navbar() {
             background: dark ? 'rgba(255,255,255,0.08)' : '#1a1a2e',
             color: dark ? '#f0f0f8' : '#fdfcf9',
             border: dark ? '1px solid rgba(255,255,255,0.10)' : 'none',
-            backdropFilter: 'blur(6px)',
+            backdropFilter: 'blur(var(--btn-blur,6px))',
           }}
           onMouseEnter={e => { e.currentTarget.style.background='#f0a500'; e.currentTarget.style.color='#fff'; }}
           onMouseLeave={e => { e.currentTarget.style.background=dark?'rgba(255,255,255,0.08)':'#1a1a2e'; e.currentTarget.style.color=dark?'#f0f0f8':'#fdfcf9'; }}>
@@ -156,7 +160,12 @@ export default function Navbar() {
         </a>
 
         {/* Mobile menu */}
-        <button className="md:hidden" onClick={() => setOpen(!open)}>
+        <button
+          className="md:hidden"
+          onClick={() => setOpen(!open)}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          aria-label={open ? 'Close menu' : 'Open menu'}>
           {open
             ? <X    size={22} style={{ color: ink }}/>
             : <Menu size={22} style={{ color: ink }}/>}
@@ -166,18 +175,21 @@ export default function Navbar() {
       {/* Mobile dropdown */}
       {open && (
         <div
-          className="absolute top-full left-0 right-0 py-5 flex flex-col items-center gap-4 md:hidden" dir={lang === "ar" ? "rtl" : "ltr"}
+          id="mobile-menu"
+          className="absolute top-full left-0 right-0 py-5 flex flex-col items-center gap-4 md:hidden"
+          dir={lang === "ar" ? "rtl" : "ltr"}
           style={{
             background: dark ? 'rgba(8,8,14,0.88)' : 'rgba(255,255,255,0.88)',
-            backdropFilter: 'blur(16px) saturate(170%)',
-            WebkitBackdropFilter: 'blur(16px) saturate(170%)',
+            backdropFilter: 'blur(var(--nav-blur,16px)) saturate(var(--nav-sat,170%))',
+            WebkitBackdropFilter: 'blur(var(--nav-blur,16px)) saturate(var(--nav-sat,170%))',
             borderBottom: `1px solid ${dark ? 'rgba(255,255,255,0.10)' : 'rgba(26,26,46,0.08)'}`,
           }}>
           {links.map(l => (
             <a key={l.id} href={`#${l.id}`}
               onClick={() => setOpen(false)}
               className="text-sm font-medium"
-              style={lc(l.id)}>
+              style={lc(l.id)}
+              aria-current={active === l.id ? 'location' : undefined}>
               {l.label}
             </a>
           ))}

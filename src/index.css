@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -18,10 +16,113 @@
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: #fdfcf9; }
   ::-webkit-scrollbar-thumb { background: #f0a500; border-radius: 4px; }
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid #f0a500;
+    outline-offset: 3px;
+  }
+  section[id] { scroll-margin-top: 90px; }
+}
+
+:root {
+  --glass-blur: 12px;
+  --glass-sat: 140%;
+  --glass-blur-hover: 12px;
+  --nav-blur: 18px;
+  --nav-sat: 180%;
+  --btn-blur: 10px;
+}
+
+@media (max-width: 640px) {
+  section[id] { scroll-margin-top: 72px; }
+  :root {
+    --glass-blur: 8px;
+    --glass-sat: 120%;
+    --glass-blur-hover: 8px;
+    --nav-blur: 12px;
+    --nav-sat: 140%;
+    --btn-blur: 6px;
+  }
+  ::-webkit-scrollbar { width: 0; height: 0; }
+  ::-webkit-scrollbar-thumb { background: transparent; }
+  body { scrollbar-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 @layer utilities {
   .font-serif-display { font-family: 'DM Serif Display', serif; }
+  .cv-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 900px;
+  }
+}
+
+/* Section shell */
+.section-shell {
+  position: relative;
+  isolation: isolate;
+}
+.section-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(700px 400px at 10% 10%, rgba(240,165,0,0.08), transparent 60%),
+    radial-gradient(600px 360px at 90% 20%, rgba(42,157,143,0.10), transparent 55%),
+    radial-gradient(500px 300px at 20% 80%, rgba(77,143,255,0.08), transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+.section-shell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 36px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 36px);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+.dark .section-shell::before {
+  background:
+    radial-gradient(700px 400px at 10% 10%, rgba(240,165,0,0.10), transparent 60%),
+    radial-gradient(600px 360px at 85% 25%, rgba(42,157,143,0.12), transparent 55%),
+    radial-gradient(500px 300px at 20% 80%, rgba(77,143,255,0.10), transparent 55%);
+}
+.dark .section-shell::after {
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 36px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 36px);
+  opacity: 0.25;
+}
+.section-shell > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Section header accent */
+.section-header {
+  position: relative;
+}
+.section-accent {
+  width: 80px;
+  height: 4px;
+  border-radius: 999px;
+  margin: 6px 0 12px;
+  background: linear-gradient(90deg, #f0a500, rgba(240,165,0,0.2));
+}
+.section-title em {
+  font-style: italic;
+  color: #f0a500;
 }
 
 /* Blobs */
