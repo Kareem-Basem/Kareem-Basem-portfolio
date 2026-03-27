@@ -13,11 +13,19 @@
     overflow-x: hidden;
     max-width: 100vw;
   }
-  a:focus-visible,
-  button:focus-visible {
-    outline: 2px solid #f0a500;
-    outline-offset: 3px;
-  }
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #f0a500;
+  outline-offset: 3px;
+}
+
+/* Disable hover transforms globally (no mouse-move animations) */
+a:hover,
+button:hover,
+button:focus-visible,
+a:focus-visible {
+  transform: none !important;
+}
   section[id] { scroll-margin-top: 90px; }
 }
 

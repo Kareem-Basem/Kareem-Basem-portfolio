@@ -27,7 +27,7 @@ export default function GlassCard({ dark, glow, className = '', onClick, style =
       className={`relative ${className}`}
       style={{
         ...(hov ? hover : base),
-        transition: 'box-shadow 0.18s ease, border-color 0.18s ease, background-color 0.18s ease',
+        transition: 'box-shadow 0.18s ease, border-color 0.18s ease',
         cursor: onClick ? 'pointer' : 'default',
         ...style,
       }}

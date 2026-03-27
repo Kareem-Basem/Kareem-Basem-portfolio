@@ -256,7 +256,6 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
   const delay = [0,.08,.15,.22,.29,.35][index]||0;
   const canClick = !!modalType;
 
-  const isTop = index < 2;
   return (
     <div className="relative rounded-2xl overflow-hidden flex flex-col float-card"
       style={{
@@ -266,10 +265,10 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
         backdropFilter:'blur(var(--glass-blur,12px)) saturate(var(--glass-sat,140%))',
         WebkitBackdropFilter:'blur(var(--glass-blur,12px)) saturate(var(--glass-sat,140%))',
         boxShadow: hov
-          ? `0 20px 55px ${m.glow}, inset 0 1px 0 rgba(255,255,255,${dark?'0.09':'0.92'})`
+          ? `0 12px 28px ${m.glow}, inset 0 1px 0 rgba(255,255,255,${dark?'0.09':'0.92'})`
           : `0 3px 18px rgba(0,0,0,${dark?'0.22':'0.06'}), inset 0 1px 0 rgba(255,255,255,${dark?'0.06':'0.88'})`,
-        transform: hov ? 'translateY(-3px)' : 'none',
-        transition:'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
+        transform: 'none',
+        transition:'box-shadow 0.2s ease, border-color 0.2s ease',
         cursor: canClick ? 'pointer' : 'default',
       }}
       onMouseEnter={() => setHov(true)}
@@ -278,13 +277,6 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
 
       <div className="absolute top-0 left-4 right-4 h-px pointer-events-none"
         style={{ background:`linear-gradient(90deg,transparent,${dark?'rgba(255,255,255,0.16)':'rgba(255,255,255,0.95)'},transparent)` }}/>
-      {isTop && (
-        <div className="absolute top-3 left-3 text-[.58rem] font-semibold px-2 py-0.5 rounded-full"
-          style={{ background:`${m.accent}22`, color:m.accent, border:`1px solid ${m.accent}38` }}>
-          {topLabel}
-        </div>
-      )}
-
       <div className="relative z-10 p-5 sm:p-8 flex flex-col h-full">
         <div className="flex items-start justify-between mb-5">
           <div className="flex items-center gap-2.5">
@@ -296,6 +288,12 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
               style={{ background:`${m.accent}12`, borderColor:`${m.accent}28`, color:m.accent }}>
               {p.tag}
             </span>
+            {index === 0 && (
+              <span className="text-[.58rem] font-semibold px-2 py-0.5 rounded-full"
+                style={{ background:`${m.accent}22`, color:m.accent, border:`1px solid ${m.accent}38` }}>
+                {topLabel}
+              </span>
+            )}
           </div>
           {liveUrl && (
             <span className="text-[.58rem] font-semibold px-2 py-0.5 rounded-full"
