@@ -244,7 +244,7 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
     if (!hasCarousel || hov || reduceMotion.current) return;
     const id = setInterval(() => {
       goTo((pi + 1) % previewUrls.length);
-    }, 5000);
+    }, 10000);
     return () => clearInterval(id);
   }, [hasCarousel, hov, pi, previewUrls]);
 
