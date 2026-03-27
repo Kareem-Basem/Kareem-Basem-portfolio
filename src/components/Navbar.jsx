@@ -64,26 +64,36 @@ export default function Navbar() {
     };
   }, []);
 
-  const ink   = dark ? '#f0f0f8' : '#1a1a2e';
-  const muted = dark ? 'rgba(255,255,255,0.55)' : '#8a8a9a';
-  const lc    = id => ({ color: active === id ? '#f0a500' : muted, transition: 'color 0.2s' });
+  const ink   = dark ? '#f0f0f8' : '#1c1b22';
+  const muted = dark ? 'rgba(255,255,255,0.75)' : '#2b2b3a';
+  const lc    = id => ({
+    color: active === id ? '#f0a500' : muted,
+    textShadow: dark ? '0 1px 8px rgba(0,0,0,0.4)' : 'none',
+    transition: 'color 0.2s',
+  });
 
   // Enhanced Liquid Glass nav style
   const navStyle = scrolled ? {
     // Real-time content refraction simulation
     background: dark
       ? 'rgba(8,8,14,0.55)'
-      : 'rgba(255,255,255,0.45)',
+      : 'rgba(255,255,255,0.70)',
     backdropFilter: 'blur(var(--nav-blur,18px)) saturate(var(--nav-sat,180%)) brightness(1.04)',
     WebkitBackdropFilter: 'blur(var(--nav-blur,18px)) saturate(var(--nav-sat,180%)) brightness(1.04)',
     borderBottom: `1px solid ${dark
       ? 'rgba(255,255,255,0.12)'
-      : 'rgba(255,255,255,0.95)'}`,
+      : 'rgba(255,255,255,0.92)'}`,
     boxShadow: dark
       ? '0 1px 0 rgba(255,255,255,0.04), 0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)'
-      : '0 1px 0 rgba(255,255,255,1), 0 8px 32px rgba(26,26,46,0.08), inset 0 1px 0 rgba(255,255,255,0.9)',
+      : '0 1px 0 rgba(255,255,255,1), 0 8px 32px rgba(26,26,46,0.10), inset 0 1px 0 rgba(255,255,255,0.95)',
   } : {
-    background: 'transparent',
+    background: dark ? 'rgba(8,8,14,0.35)' : 'rgba(255,255,255,0.55)',
+    backdropFilter: 'blur(var(--nav-blur,18px)) saturate(var(--nav-sat,180%))',
+    WebkitBackdropFilter: 'blur(var(--nav-blur,18px)) saturate(var(--nav-sat,180%))',
+    borderBottom: `1px solid ${dark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.75)'}`,
+    boxShadow: dark
+      ? '0 1px 0 rgba(255,255,255,0.04), 0 6px 24px rgba(0,0,0,0.25)'
+      : '0 1px 0 rgba(255,255,255,1), 0 6px 24px rgba(26,26,46,0.08)',
   };
 
   return (
