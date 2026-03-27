@@ -5,9 +5,9 @@ export default function SectionHeader({ tag, title }) {
   return (
     <div className="mb-10 section-header">
       <span
-        className="inline-block text-xs font-semibold tracking-[.14em] uppercase text-amber mb-2 px-3 py-1 rounded-full"
+        className="inline-block text-xs font-semibold tracking-[.14em] uppercase text-amber mb-2 px-3 py-1 rounded-full tahoe-pill"
         style={{
-          background: dark ? 'rgba(240,165,0,0.12)' : 'rgba(240,165,0,0.10)',
+          background: dark ? 'rgba(240,165,0,0.12)' : 'rgba(255,255,255,0.65)',
           border: '1px solid rgba(240,165,0,0.25)',
         }}>
         {tag}

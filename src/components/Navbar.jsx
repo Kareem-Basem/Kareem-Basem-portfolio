@@ -128,13 +128,13 @@ export default function Navbar() {
         {/* Lang toggle */}
         <button
           onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
-          className="px-3 py-1.5 rounded-full text-xs font-semibold border transition-all hover:border-amber hover:text-amber"
+          className="px-3 py-1.5 rounded-full text-xs font-semibold border transition-all hover:border-amber hover:text-amber tahoe-pill"
           aria-label={lang === 'en' ? 'Switch language to Arabic' : 'Switch language to English'}
           style={{
             borderColor: dark ? 'rgba(255,255,255,0.14)' : 'rgba(26,26,46,0.14)',
             color: muted,
-            background: dark ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.6)',
-            backdropFilter: 'blur(var(--btn-blur,6px))',
+            background: 'transparent',
+            backdropFilter: 'blur(var(--btn-blur,12px))',
           }}>
           {lang === 'en' ? 'ع' : 'EN'}
         </button>
@@ -142,13 +142,13 @@ export default function Navbar() {
         {/* Dark mode */}
         <button
           onClick={() => setDark(!dark)}
-          className="w-9 h-9 rounded-full border flex items-center justify-center transition-all hover:border-amber"
+          className="w-9 h-9 rounded-full border flex items-center justify-center transition-all hover:border-amber tahoe-pill"
           aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
           style={{
             borderColor: dark ? 'rgba(255,255,255,0.14)' : 'rgba(26,26,46,0.14)',
             color: dark ? '#f0a500' : muted,
-            background: dark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.6)',
-            backdropFilter: 'blur(var(--btn-blur,6px))',
+            background: 'transparent',
+            backdropFilter: 'blur(var(--btn-blur,12px))',
           }}>
           {dark ? <Sun size={15}/> : <Moon size={15}/>}
         </button>
@@ -156,15 +156,15 @@ export default function Navbar() {
         {/* Hire Me */}
         <a
           href="mailto:karemalwy1@gmail.com"
-          className="hidden md:inline-block px-4 py-2 text-sm font-semibold rounded-full transition-all hover:-translate-y-0.5"
+          className="hidden md:inline-block px-4 py-2 text-sm font-semibold rounded-full transition-all hover:-translate-y-0.5 tahoe-pill"
           style={{
-            background: dark ? 'rgba(255,255,255,0.08)' : '#1a1a2e',
-            color: dark ? '#f0f0f8' : '#fdfcf9',
-            border: dark ? '1px solid rgba(255,255,255,0.10)' : 'none',
-            backdropFilter: 'blur(var(--btn-blur,6px))',
+            background: dark ? 'rgba(255,255,255,0.10)' : 'rgba(255,255,255,0.75)',
+            color: dark ? '#f0f0f8' : '#1c1b22',
+            border: dark ? '1px solid rgba(255,255,255,0.18)' : '1px solid rgba(28,27,34,0.10)',
+            backdropFilter: 'blur(var(--btn-blur,12px))',
           }}
           onMouseEnter={e => { e.currentTarget.style.background='#f0a500'; e.currentTarget.style.color='#fff'; }}
-          onMouseLeave={e => { e.currentTarget.style.background=dark?'rgba(255,255,255,0.08)':'#1a1a2e'; e.currentTarget.style.color=dark?'#f0f0f8':'#fdfcf9'; }}>
+          onMouseLeave={e => { e.currentTarget.style.background=dark?'rgba(255,255,255,0.10)':'rgba(255,255,255,0.75)'; e.currentTarget.style.color=dark?'#f0f0f8':'#1c1b22'; }}>
           {tr.hireMe}
         </a>
 
@@ -212,3 +212,4 @@ export default function Navbar() {
     </nav>
   );
 }
+

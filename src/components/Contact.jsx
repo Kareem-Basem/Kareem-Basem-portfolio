@@ -22,7 +22,7 @@ export default function Contact() {
 
         <div className="relative z-10 max-w-2xl">
           <div className="reveal">
-            <span className="inline-block text-xs font-semibold tracking-[.14em] uppercase mb-3 px-3 py-1 rounded-full"
+            <span className="inline-block text-xs font-semibold tracking-[.14em] uppercase mb-3 px-3 py-1 rounded-full tahoe-pill"
               style={{ background:'rgba(240,165,0,0.12)', border:'1px solid rgba(240,165,0,0.28)', color:'#f0a500' }}>
               {tr.conTag}
             </span>
@@ -46,7 +46,7 @@ export default function Contact() {
                 rel="noreferrer"
                 download={l.download}
                 aria-label={l.label[lang] || l.label.en}
-                className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all hover:-translate-y-0.5"
+                className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all hover:-translate-y-0.5 tahoe-pill"
                 style={{
                   background: l.download
                     ? 'rgba(240,165,0,0.10)'

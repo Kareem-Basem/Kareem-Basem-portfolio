@@ -8,6 +8,10 @@
   html { scroll-behavior: smooth; }
   body {
     background-color: var(--tahoe-bg);
+    background-image:
+      radial-gradient(900px 520px at 12% 6%, rgba(120,190,255,0.18), transparent 60%),
+      radial-gradient(700px 420px at 85% 12%, rgba(80,200,180,0.12), transparent 55%),
+      radial-gradient(620px 380px at 18% 86%, rgba(255,200,120,0.16), transparent 55%);
     color: var(--tahoe-ink);
     font-family: 'Plus Jakarta Sans', sans-serif;
     overflow-x: hidden;
@@ -53,6 +57,9 @@ html, body {
   --tahoe-accent: #f0a500;
   --tahoe-shadow: 0 18px 50px rgba(30, 28, 40, 0.10);
   --tahoe-shadow-hover: 0 26px 70px rgba(30, 28, 40, 0.16);
+  --tahoe-glass: rgba(255,255,255,0.58);
+  --tahoe-glass-strong: rgba(255,255,255,0.72);
+  --tahoe-border: rgba(255,255,255,0.65);
 }
 
 @media (max-width: 640px) {
@@ -142,6 +149,24 @@ html, body {
 .section-title em {
   font-style: italic;
   color: #f0a500;
+}
+
+/* Tahoe UI elements */
+.tahoe-pill {
+  border-radius: 999px;
+  background: var(--tahoe-glass);
+  border: 1px solid var(--tahoe-border);
+  box-shadow: 0 8px 24px rgba(30,28,40,0.12), inset 0 1px 0 rgba(255,255,255,0.9);
+  backdrop-filter: blur(22px) saturate(190%);
+  -webkit-backdrop-filter: blur(22px) saturate(190%);
+}
+.tahoe-pill:hover {
+  background: var(--tahoe-glass-strong);
+}
+.dark .tahoe-pill {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(255,255,255,0.20);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
 /* Blobs */
