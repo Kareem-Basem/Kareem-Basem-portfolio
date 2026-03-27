@@ -32,12 +32,12 @@ html, body {
 }
 
 :root {
-  --glass-blur: 12px;
-  --glass-sat: 140%;
-  --glass-blur-hover: 12px;
-  --nav-blur: 18px;
-  --nav-sat: 180%;
-  --btn-blur: 10px;
+  --glass-blur: 8px;
+  --glass-sat: 120%;
+  --glass-blur-hover: 8px;
+  --nav-blur: 12px;
+  --nav-sat: 150%;
+  --btn-blur: 8px;
 }
 
 @media (max-width: 640px) {

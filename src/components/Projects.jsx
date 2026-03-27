@@ -54,7 +54,6 @@ function ExamorModal({ onClose, dark, lang }) {
 /* ─── Glass card ─── */
 function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liveUrl, previewUrls, onPreview, techLabel, topLabel, previewToggleLabel, previewToggle, previewDefaultOpen = true, previewOpen, onTogglePreview }) {
   const [hov, setHov] = useState(false);
-  const [pos, setPos] = useState({ x:50, y:50 });
   const [pi, setPi] = useState(0);
   const [fading, setFading] = useState(false);
   const hasCarousel = Array.isArray(previewUrls) && previewUrls.length > 1;
@@ -113,12 +112,8 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
       }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      onMouseMove={e => { const r=e.currentTarget.getBoundingClientRect(); setPos({ x:((e.clientX-r.left)/r.width*100).toFixed(1), y:((e.clientY-r.top)/r.height*100).toFixed(1) }); }}
       onClick={canClick ? onOpen : undefined}>
 
-      {/* Glow */}
-      <div className="absolute inset-0 pointer-events-none rounded-2xl transition-opacity duration-300"
-        style={{ opacity:hov?1:0, background:`radial-gradient(circle at ${pos.x}% ${pos.y}%, ${m.glow}, transparent 60%)` }}/>
       {/* Specular */}
       <div className="absolute top-0 left-4 right-4 h-px pointer-events-none"
         style={{ background:`linear-gradient(90deg,transparent,${dark?'rgba(255,255,255,0.16)':'rgba(255,255,255,0.95)'},transparent)` }}/>
@@ -343,7 +338,6 @@ export default function Projects() {
           {tr.projects.map((p, i) => {
             const isToggleCard = previewToggleIndexes.has(i);
             const commonProps = {
-              key: i,
               p,
               m: projectMeta[i],
               chips: chips[i],
@@ -361,9 +355,9 @@ export default function Projects() {
             };
 
             return isToggleCard ? (
-              <TogglePreviewCard {...commonProps} />
+              <TogglePreviewCard key={`project-${i}`} {...commonProps} />
             ) : (
-              <GlassCard {...commonProps} />
+              <GlassCard key={`project-${i}`} {...commonProps} />
             );
           })}
         </div>
