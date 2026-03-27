@@ -7,22 +7,22 @@ export const INK    = '#1a1a2e';
 
 // Base glass card — visible border
 export const glass = (dark) => ({
-  background:           dark ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.75)',
+  background:           dark ? 'rgba(255,255,255,0.10)' : 'rgba(255,255,255,0.80)',
   border:               `1px solid ${dark ? 'rgba(255,255,255,0.14)' : 'rgba(26,26,46,0.14)'}`,
   backdropFilter:       'blur(var(--glass-blur,12px)) saturate(var(--glass-sat,140%))',
   WebkitBackdropFilter: 'blur(var(--glass-blur,12px)) saturate(var(--glass-sat,140%))',
   boxShadow: dark
-    ? '0 3px 14px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.07)'
-    : '0 3px 14px rgba(26,26,46,0.06), inset 0 1px 0 rgba(255,255,255,0.9)',
+    ? '0 8px 28px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.08)'
+    : '0 8px 28px rgba(30,28,40,0.10), inset 0 1px 0 rgba(255,255,255,0.95)',
 });
 
 // Hovered glass card
 export const glassHov = (dark, glow = AMBER + '44') => ({
-  background:           dark ? 'rgba(255,255,255,0.09)' : 'rgba(255,255,255,0.90)',
+  background:           dark ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.95)',
   border:               `1px solid ${dark ? 'rgba(255,255,255,0.22)' : 'rgba(26,26,46,0.20)'}`,
   backdropFilter:       'blur(var(--glass-blur-hover,12px)) saturate(var(--glass-sat,140%))',
   WebkitBackdropFilter: 'blur(var(--glass-blur-hover,12px)) saturate(var(--glass-sat,140%))',
-  boxShadow:            `0 12px 28px ${glow}, inset 0 1px 0 rgba(255,255,255,${dark?'0.10':'0.95'})`,
+  boxShadow:            `0 22px 60px ${glow}, inset 0 1px 0 rgba(255,255,255,${dark?'0.12':'0.98'})`,
 });
 
 // Legacy alias
