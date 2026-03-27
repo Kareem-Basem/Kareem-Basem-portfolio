@@ -102,7 +102,7 @@ export default function Certs() {
   const lbl  = certLabels[lang] || certLabels.en;
 
   return (
-    <section id="certs" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300 overflow-x-hidden cv-auto section-shell">
+    <section id="certs" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300 overflow-x-hidden cv-auto section-shell no-scroll-anchor">
       <SectionHeader tag={tr.certsTag} title={tr.certsTitle}/>
       <p className="text-sm mb-8 -mt-6" style={{ color:faint(dark) }}>
         {lang==='ar' ? 'اضغط الفئة لتوسيعها · اضغط الشهادة لعرض صورتها' : 'Click category to expand · Click cert to preview'}

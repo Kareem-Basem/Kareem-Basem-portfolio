@@ -214,15 +214,15 @@ function GTAModal({ data, github, onClose, dark }) {
   );
 }
 
-function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liveUrl, previewUrls, onPreview, techLabel, topLabel, previewToggleLabel, previewToggle, previewDefaultOpen = true }) {
+function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liveUrl, previewUrls, onPreview, techLabel, topLabel, previewToggleLabel, previewToggle, previewDefaultOpen = true, isPreviewOpen, onTogglePreview }) {
   const [hov, setHov] = useState(false);
   const [pi, setPi] = useState(0);
   const [fading, setFading] = useState(false);
-  const [isPreviewOpen, setIsPreviewOpen] = useState(previewDefaultOpen);
   const hasCarousel = Array.isArray(previewUrls) && previewUrls.length > 1;
   const curPreview = Array.isArray(previewUrls) ? previewUrls[pi] : previewUrls;
   const canPreview = Boolean(curPreview);
   const reduceMotion = useRef(false);
+  const previewOpen = previewToggle ? (typeof isPreviewOpen === 'boolean' ? isPreviewOpen : previewDefaultOpen) : true;
   const goTo = (nextIndex) => {
     if (!hasCarousel) return;
     setFading(true);
@@ -318,14 +318,14 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
               type="button"
               onClick={e => {
                 e.stopPropagation();
-                setIsPreviewOpen(v => !v);
+                onTogglePreview?.();
               }}
               className="text-[.66rem] font-semibold px-3 py-1 rounded-full mb-2"
               style={{ background:`${m.accent}18`, color:m.accent, border:`1px solid ${m.accent}30` }}>
-              {isPreviewOpen ? previewToggleLabel?.hide : previewToggleLabel?.show}
+              {previewOpen ? previewToggleLabel?.hide : previewToggleLabel?.show}
             </button>
           )}
-          {(!previewToggle || isPreviewOpen) && (
+          {(!previewToggle || previewOpen) && (
             <div
               className="relative rounded-xl overflow-hidden preview-16-9"
               style={{
@@ -472,6 +472,7 @@ export default function Projects() {
   const previewToggleLabel = { show: tr.showPreview, hide: tr.hidePreview };
   const [modal, setModal] = useState(null); // 'examor' | 'vc' | 'sa' | null
   const [lightbox, setLightbox] = useState(null); // { src, title }
+  const [openPreviews, setOpenPreviews] = useState({ 4: false, 5: false });
   const previewToggleIndexes = new Set([4, 5]);
   const bg = dark ? '#0f0f14' : '#fdfcf9';
 
@@ -479,11 +480,12 @@ export default function Projects() {
 
   return (
     <>
-      <section id="projects" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300 overflow-x-hidden cv-auto section-shell">
+      <section id="projects" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300 overflow-x-hidden cv-auto section-shell no-scroll-anchor">
         <SectionHeader tag={tr.projTag} title={tr.projTitle}/>
         <div className="grid md:grid-cols-2 gap-5 stagger">
           {tr.projects.map((p, i) => {
             const isToggleCard = previewToggleIndexes.has(i);
+            const isPreviewOpen = openPreviews[i] ?? false;
             const commonProps = {
               p,
               m: projectMeta[i],
@@ -499,6 +501,10 @@ export default function Projects() {
               techLabel,
               topLabel,
               previewToggleLabel,
+              isPreviewOpen,
+              onTogglePreview: isToggleCard
+                ? () => setOpenPreviews(prev => ({ ...prev, [i]: !isPreviewOpen }))
+                : undefined,
             };
 
             return isToggleCard ? (

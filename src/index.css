@@ -135,6 +135,12 @@ html, body {
   z-index: 1;
 }
 
+/* Prevent scroll anchoring jump on expand/collapse */
+.no-scroll-anchor,
+.no-scroll-anchor * {
+  overflow-anchor: none;
+}
+
 /* Section header accent */
 .section-header {
   position: relative;
