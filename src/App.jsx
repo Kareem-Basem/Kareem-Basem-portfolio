@@ -148,29 +148,9 @@ function Inner() {
   }, [lang]);
 
   useEffect(() => {
-    // Reset and re-observe all reveal elements on lang change
-    const timer = setTimeout(() => {
-      document.querySelectorAll('.reveal').forEach(el => {
-        el.classList.add('visible');
-      });
-    }, 50);
-    return () => clearTimeout(timer);
-  }, [lang]);
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      entries => entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          obs.unobserve(e.target);
-        }
-      }),
-      { threshold: 0, rootMargin: '0px 0px -30px 0px' }
-    );
-    const timer = setTimeout(() => {
-      document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-    }, 100);
-    return () => { clearTimeout(timer); obs.disconnect(); };
+    document.querySelectorAll('.reveal').forEach(el => {
+      el.classList.add('visible');
+    });
   }, []);
 
   return (

@@ -8,10 +8,6 @@
   html { scroll-behavior: smooth; }
   body {
     background-color: var(--tahoe-bg);
-    background-image:
-      radial-gradient(900px 520px at 12% 6%, rgba(120,190,255,0.18), transparent 60%),
-      radial-gradient(700px 420px at 85% 12%, rgba(80,200,180,0.12), transparent 55%),
-      radial-gradient(620px 380px at 18% 86%, rgba(255,200,120,0.16), transparent 55%);
     color: var(--tahoe-ink);
     font-family: 'Plus Jakarta Sans', sans-serif;
     overflow-x: hidden;
@@ -96,39 +92,9 @@ html, body {
   position: relative;
   isolation: isolate;
 }
-.section-shell::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(900px 480px at 12% 8%, rgba(240,165,0,0.10), transparent 60%),
-    radial-gradient(700px 420px at 85% 15%, rgba(42,157,143,0.12), transparent 55%),
-    radial-gradient(620px 380px at 20% 85%, rgba(77,143,255,0.10), transparent 55%);
-  pointer-events: none;
-  z-index: 0;
-}
+.section-shell::before,
 .section-shell::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 40px),
-    repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 40px);
-  opacity: 0.28;
-  pointer-events: none;
-  z-index: 0;
-}
-.dark .section-shell::before {
-  background:
-    radial-gradient(700px 400px at 10% 10%, rgba(240,165,0,0.10), transparent 60%),
-    radial-gradient(600px 360px at 85% 25%, rgba(42,157,143,0.12), transparent 55%),
-    radial-gradient(500px 300px at 20% 80%, rgba(77,143,255,0.10), transparent 55%);
-}
-.dark .section-shell::after {
-  background:
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 36px),
-    repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 36px);
-  opacity: 0.25;
+  content: none;
 }
 .section-shell > * {
   position: relative;
@@ -322,15 +288,15 @@ html {
 
 /* Scroll reveal */
 .reveal {
-  opacity: 0;
-  transform: translate3d(0, 14px, 0);
-  transition: opacity 0.26s ease, transform 0.26s ease;
-  will-change: opacity, transform;
+  opacity: 1;
+  transform: none;
+  transition: none;
+  will-change: auto;
 }
 
 .reveal.visible {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
+  transform: none;
 }
 
 .card-lift {
