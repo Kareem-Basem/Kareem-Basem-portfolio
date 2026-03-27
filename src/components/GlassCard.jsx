@@ -29,7 +29,7 @@ export default function GlassCard({ dark, glow, className = '', onClick, style =
         ...(hov ? hover : base),
         transition: 'box-shadow 0.22s ease, border-color 0.22s ease, background-color 0.22s ease, transform 0.22s ease',
         cursor: onClick ? 'pointer' : 'default',
-        willChange: 'transform, box-shadow',
+        willChange: 'auto',
         ...style,
       }}
       onMouseEnter={() => setHov(true)}

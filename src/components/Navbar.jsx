@@ -78,8 +78,6 @@ export default function Navbar() {
     background: dark
       ? 'rgba(8,8,14,0.55)'
       : 'rgba(255,255,255,0.70)',
-    backdropFilter: 'blur(var(--nav-blur,18px)) saturate(var(--nav-sat,180%)) brightness(1.04)',
-    WebkitBackdropFilter: 'blur(var(--nav-blur,18px)) saturate(var(--nav-sat,180%)) brightness(1.04)',
     borderBottom: `1px solid ${dark
       ? 'rgba(255,255,255,0.12)'
       : 'rgba(255,255,255,0.92)'}`,
@@ -88,8 +86,6 @@ export default function Navbar() {
       : '0 1px 0 rgba(255,255,255,1), 0 8px 32px rgba(26,26,46,0.10), inset 0 1px 0 rgba(255,255,255,0.95)',
   } : {
     background: dark ? 'rgba(8,8,14,0.35)' : 'rgba(255,255,255,0.55)',
-    backdropFilter: 'blur(var(--nav-blur,18px)) saturate(var(--nav-sat,180%))',
-    WebkitBackdropFilter: 'blur(var(--nav-blur,18px)) saturate(var(--nav-sat,180%))',
     borderBottom: `1px solid ${dark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.75)'}`,
     boxShadow: dark
       ? '0 1px 0 rgba(255,255,255,0.04), 0 6px 24px rgba(0,0,0,0.25)'
@@ -134,7 +130,6 @@ export default function Navbar() {
             borderColor: dark ? 'rgba(255,255,255,0.14)' : 'rgba(26,26,46,0.14)',
             color: muted,
             background: 'transparent',
-            backdropFilter: 'blur(var(--btn-blur,12px))',
           }}>
           {lang === 'en' ? 'ع' : 'EN'}
         </button>
@@ -148,7 +143,6 @@ export default function Navbar() {
             borderColor: dark ? 'rgba(255,255,255,0.14)' : 'rgba(26,26,46,0.14)',
             color: dark ? '#f0a500' : muted,
             background: 'transparent',
-            backdropFilter: 'blur(var(--btn-blur,12px))',
           }}>
           {dark ? <Sun size={15}/> : <Moon size={15}/>}
         </button>
@@ -161,7 +155,6 @@ export default function Navbar() {
             background: dark ? 'rgba(255,255,255,0.10)' : 'rgba(255,255,255,0.75)',
             color: dark ? '#f0f0f8' : '#1c1b22',
             border: dark ? '1px solid rgba(255,255,255,0.18)' : '1px solid rgba(28,27,34,0.10)',
-            backdropFilter: 'blur(var(--btn-blur,12px))',
           }}
           onMouseEnter={e => { e.currentTarget.style.background='#f0a500'; e.currentTarget.style.color='#fff'; }}
           onMouseLeave={e => { e.currentTarget.style.background=dark?'rgba(255,255,255,0.10)':'rgba(255,255,255,0.75)'; e.currentTarget.style.color=dark?'#f0f0f8':'#1c1b22'; }}>
@@ -189,8 +182,6 @@ export default function Navbar() {
           dir={lang === "ar" ? "rtl" : "ltr"}
           style={{
             background: dark ? 'rgba(8,8,14,0.88)' : 'rgba(255,255,255,0.88)',
-            backdropFilter: 'blur(var(--nav-blur,16px)) saturate(var(--nav-sat,170%))',
-            WebkitBackdropFilter: 'blur(var(--nav-blur,16px)) saturate(var(--nav-sat,170%))',
             borderBottom: `1px solid ${dark ? 'rgba(255,255,255,0.10)' : 'rgba(26,26,46,0.08)'}`,
           }}>
           {links.map(l => (

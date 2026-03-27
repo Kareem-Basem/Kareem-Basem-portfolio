@@ -55,7 +55,6 @@ export default function Contact() {
                     ? '1.5px solid rgba(240,165,0,0.35)'
                     : (dark ? '1.5px solid rgba(255,255,255,0.15)' : '1.5px solid rgba(28,27,34,0.12)'),
                   color: l.download ? '#f0a500' : (dark ? 'rgba(255,255,255,0.65)' : '#1c1b22'),
-                  backdropFilter:'blur(14px)',
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.borderColor = '#f0a500';

@@ -32,7 +32,7 @@ function Modal({ onClose, dark, ariaLabel, children }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto"
-      style={{ background: overlay, backdropFilter:'blur(8px)' }}
+      style={{ background: overlay }}
       onClick={onClose}>
       <div
         ref={dialogRef}
@@ -58,7 +58,7 @@ function ExamorModal({ onClose, dark, lang }) {
   return (
     <Modal onClose={onClose} dark={dark} ariaLabel="Examor project details">
       <div className="rounded-2xl p-6 shadow-2xl"
-        style={{ background:bg, border:`1px solid ${bord}`, backdropFilter:'blur(14px)' }}>
+        style={{ background:bg, border:`1px solid ${bord}` }}>
         <button
           onClick={onClose}
           aria-label="Close modal"
@@ -102,7 +102,7 @@ function GTAModal({ data, github, onClose, dark }) {
   return (
     <Modal onClose={onClose} dark={dark} ariaLabel={`${data.title} details`}>
       <div className="rounded-2xl overflow-hidden shadow-2xl"
-        style={{ background:bg, border:`1px solid ${bord}`, backdropFilter:'blur(14px)' }}>
+        style={{ background:bg, border:`1px solid ${bord}` }}>
 
         <div className="h-1" style={{ background:`linear-gradient(90deg,${ac},${ac}88)` }}/>
 
@@ -256,8 +256,6 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
         transitionDelay:`${delay}s`,
         background: gbg,
         border:`1px solid ${hov ? m.accent+'50' : gbord}`,
-        backdropFilter:'blur(var(--glass-blur,12px)) saturate(var(--glass-sat,140%))',
-        WebkitBackdropFilter:'blur(var(--glass-blur,12px)) saturate(var(--glass-sat,140%))',
         boxShadow: hov
           ? `0 12px 28px ${m.glow}, inset 0 1px 0 rgba(255,255,255,${dark?'0.09':'0.92'})`
           : `0 3px 18px rgba(0,0,0,${dark?'0.22':'0.06'}), inset 0 1px 0 rgba(255,255,255,${dark?'0.06':'0.88'})`,

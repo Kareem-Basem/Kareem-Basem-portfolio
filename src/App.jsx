@@ -40,7 +40,6 @@ function BackToTop({ dark }) {
   const style = {
     background: dark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.80)',
     border: `1px solid ${dark ? 'rgba(255,255,255,0.15)' : 'rgba(26,26,46,0.14)'}`,
-    backdropFilter: 'blur(var(--btn-blur,10px))',
     color: '#f0a500',
     boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
   };
