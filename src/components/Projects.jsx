@@ -522,7 +522,10 @@ export default function Projects() {
               previewToggle={isToggleCard}
               previewDefaultOpen={false}
               previewOpen={isToggleCard ? previewOpenMap[i] : undefined}
-              onTogglePreview={isToggleCard ? () => setPreviewOpenMap(prev => ({ ...prev, [i]: !prev[i] })) : undefined}
+              onTogglePreview={isToggleCard ? () => setPreviewOpenMap(prev => ({
+                4: i === 4 ? !prev[4] : false,
+                5: i === 5 ? !prev[5] : false,
+              })) : undefined}
             />
             );
           })}
