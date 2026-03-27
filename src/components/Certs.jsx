@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import SectionHeader from './SectionHeader';
 import GlassCard from './GlassCard';
@@ -10,24 +10,9 @@ import { certGroups, certLabels } from '../data/portfolioData';
 function CertRow({ c, accent, glow, dark }) {
   const [exp, setExp] = useState(false);
   const rowRef = useRef(null);
-  const previousTopRef = useRef(null);
-
-  useLayoutEffect(() => {
-    if (previousTopRef.current == null || !rowRef.current) return;
-
-    const nextTop = rowRef.current.getBoundingClientRect().top;
-    const delta = nextTop - previousTopRef.current;
-
-    if (Math.abs(delta) > 1) {
-      window.scrollBy({ top: delta, left: 0, behavior: 'auto' });
-    }
-
-    previousTopRef.current = null;
-  }, [exp]);
 
   const handleToggle = () => {
     if (!c.img || !rowRef.current) return;
-    previousTopRef.current = rowRef.current.getBoundingClientRect().top;
     setExp(v => !v);
   };
 
@@ -70,36 +55,8 @@ export default function Certs() {
   const bg   = dark ? '#13131e' : '#f5f0e8';
   const lbl  = certLabels[lang] || certLabels.en;
   const groupRefs = useRef({});
-  const previousGroupTopRef = useRef(null);
-  const previousGroupIndexRef = useRef(null);
-
-  useLayoutEffect(() => {
-    if (previousGroupIndexRef.current == null) return;
-
-    const groupEl = groupRefs.current[previousGroupIndexRef.current];
-    if (!groupEl || previousGroupTopRef.current == null) {
-      previousGroupTopRef.current = null;
-      previousGroupIndexRef.current = null;
-      return;
-    }
-
-    const nextTop = groupEl.getBoundingClientRect().top;
-    const delta = nextTop - previousGroupTopRef.current;
-
-    if (Math.abs(delta) > 1) {
-      window.scrollBy({ top: delta, left: 0, behavior: 'auto' });
-    }
-
-    previousGroupTopRef.current = null;
-    previousGroupIndexRef.current = null;
-  }, [open]);
 
   const handleGroupToggle = (gi) => {
-    const groupEl = groupRefs.current[gi];
-    if (groupEl) {
-      previousGroupTopRef.current = groupEl.getBoundingClientRect().top;
-      previousGroupIndexRef.current = gi;
-    }
     setOpen(prev => (prev === gi ? null : gi));
   };
 

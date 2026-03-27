@@ -229,13 +229,11 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
   const [pos, setPos] = useState({ x:50, y:50 });
   const [pi, setPi] = useState(0);
   const [fading, setFading] = useState(false);
-  const [localPreviewOpen, setLocalPreviewOpen] = useState(previewDefaultOpen);
   const hasCarousel = Array.isArray(previewUrls) && previewUrls.length > 1;
   const curPreview = Array.isArray(previewUrls) ? previewUrls[pi] : previewUrls;
   const canPreview = Boolean(curPreview);
   const reduceMotion = useRef(false);
-  const isControlled = typeof previewOpen === 'boolean';
-  const isPreviewOpen = isControlled ? previewOpen : localPreviewOpen;
+  const isPreviewOpen = previewToggle ? !!previewOpen : true;
   const goTo = (nextIndex) => {
     if (!hasCarousel) return;
     setFading(true);
@@ -339,11 +337,7 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
               type="button"
               onClick={e => {
                 e.stopPropagation();
-                if (isControlled) {
-                  onTogglePreview?.();
-                } else {
-                  setLocalPreviewOpen(v => !v);
-                }
+                onTogglePreview?.();
               }}
               className="text-[.66rem] font-semibold px-3 py-1 rounded-full mb-2"
               style={{ background:`${m.accent}18`, color:m.accent, border:`1px solid ${m.accent}30` }}>
