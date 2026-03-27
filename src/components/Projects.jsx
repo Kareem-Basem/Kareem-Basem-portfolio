@@ -7,10 +7,9 @@ import {
   projectMeta,
   projectChips,
   projectLinks,
-  projectPreviews,
 } from '../data/portfolioData';
 
-function ProjectCard({ p, m, chips, index, dark, githubUrl, liveUrl, previewUrl, techLabel, topLabel }) {
+function ProjectCard({ p, m, chips, index, dark, githubUrl, liveUrl, techLabel, topLabel }) {
   const [hov, setHov] = useState(false);
   const gbg   = dark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.72)';
   const gbord = dark ? 'rgba(255,255,255,0.12)' : 'rgba(26,26,46,0.13)';
@@ -75,35 +74,11 @@ function ProjectCard({ p, m, chips, index, dark, githubUrl, liveUrl, previewUrl,
             className="relative rounded-xl overflow-hidden preview-16-9"
             style={{
               background: dark
-                ? 'linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))'
-                : 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.7))',
-              border: `1px solid ${dark ? 'rgba(255,255,255,0.12)' : 'rgba(26,26,46,0.12)'}`,
-              boxShadow: dark
-                ? 'inset 0 1px 0 rgba(255,255,255,0.06)'
-                : 'inset 0 1px 0 rgba(255,255,255,0.8)',
-            }}>
-            {previewUrl ? (
-              <img
-                src={previewUrl}
-                alt={`${p.title} preview`}
-                className="w-full h-full object-cover"
-                loading="lazy"
-                decoding="async"
-              />
-            ) : (
-              <>
-                <div style={{ height: 10, background: dark ? 'rgba(255,255,255,0.08)' : 'rgba(26,26,46,0.08)' }} />
-                <div className="flex gap-2 p-2">
-                  <div style={{ width: 22, height: 18, borderRadius: 4, background: `${m.accent}25` }} />
-                  <div style={{ flex: 1, height: 18, borderRadius: 4, background: dark ? 'rgba(255,255,255,0.06)' : 'rgba(26,26,46,0.06)' }} />
-                </div>
-                <div className="px-2 pb-2">
-                  <div style={{ height: 8, borderRadius: 4, background: dark ? 'rgba(255,255,255,0.05)' : 'rgba(26,26,46,0.05)' }} />
-                  <div style={{ height: 8, borderRadius: 4, marginTop: 6, width: '75%', background: dark ? 'rgba(255,255,255,0.05)' : 'rgba(26,26,46,0.05)' }} />
-                </div>
-              </>
-            )}
-          </div>
+                ? 'rgba(255,255,255,0.06)'
+                : 'rgba(0,0,0,0.03)',
+              border: `1px solid ${dark ? 'rgba(255,255,255,0.12)' : 'rgba(26,26,46,0.10)'}`,
+            }}
+          />
         </div>
 
         <div className="flex items-center justify-between mt-5 pt-4"
@@ -161,9 +136,7 @@ export default function Projects() {
     <section id="projects" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300 overflow-x-hidden cv-auto section-shell no-scroll-anchor">
       <SectionHeader tag={tr.projTag} title={tr.projTitle}/>
       <div className="grid md:grid-cols-2 gap-5 stagger">
-        {tr.projects.map((p, i) => {
-          const preview = Array.isArray(projectPreviews[i]) ? projectPreviews[i][0] : projectPreviews[i];
-          return (
+        {tr.projects.map((p, i) => (
             <ProjectCard
               key={`project-${p.title}`}
               p={p}
@@ -173,12 +146,10 @@ export default function Projects() {
               dark={dark}
               githubUrl={i === 0 ? projectLinks.github.examor : i === 1 ? projectLinks.github.vision : i === 2 ? projectLinks.github.vc : i === 3 ? projectLinks.github.sa : null}
               liveUrl={i === 0 ? projectLinks.live.examor : i === 1 ? projectLinks.live.vision : null}
-              previewUrl={preview || null}
               techLabel={techLabel}
               topLabel={topLabel}
             />
-          );
-        })}
+        ))}
       </div>
     </section>
   );

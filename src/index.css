@@ -22,11 +22,11 @@
   /* Tahoe-like hover */
   a,
   button {
-    transition: transform 0.22s ease, box-shadow 0.22s ease, opacity 0.22s ease;
+    transition: none;
   }
   a:hover,
   button:hover {
-    transform: translateY(-2px);
+    transform: none;
   }
   section[id] { scroll-margin-top: 90px; }
 }
@@ -347,7 +347,7 @@ html {
 /* Tahoe card hover */
 .float-card {
   box-shadow: var(--tahoe-shadow);
-  transition: transform 0.26s ease, box-shadow 0.26s ease;
+  transition: none;
 }
 
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
