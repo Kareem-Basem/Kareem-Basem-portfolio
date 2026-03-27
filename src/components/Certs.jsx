@@ -48,17 +48,58 @@ function CertRow({ c, accent, glow, dark }) {
   );
 }
 
+function CertGroup({ g, gi, lbl, dark }) {
+  const [open, setOpen] = useState(false);
+  const Icon = g.icon;
+  return (
+    <div key={g.key}>
+      <GlassCard dark={dark} glow={g.glow} className="rounded-2xl float-card" onClick={() => setOpen(v => !v)}
+        style={{
+          cursor:'pointer',
+          ...(open ? { background:`${g.accent}14`, border:`1px solid ${g.accent}38`, boxShadow:`0 8px 28px ${g.glow}` } : {}),
+        }}>
+        <div className="px-5 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span style={{ color:open?g.accent:muted(dark) }}><Icon size={15}/></span>
+              <span className="font-semibold text-sm" style={{ color:open?g.accent:ink(dark) }}>{lbl[g.key]}</span>
+              <span className="text-xs opacity-45" style={{ color:muted(dark) }}>({g.certs.length})</span>
+            </div>
+            <ChevronDown size={15} style={{ color:g.accent, transform:open?'rotate(180deg)':'rotate(0)', transition:'transform .3s' }}/>
+          </div>
+          {g.key === 'cyber' && (
+            <div className="mt-2.5">
+              <div className="flex justify-between text-[.62rem] mb-1" style={{ color:muted(dark) }}>
+                <span>Google Cybersecurity Professional Certificate</span>
+                <span style={{ color:g.accent, fontWeight:600 }}>6/9</span>
+              </div>
+              <div className="h-1.5 rounded-full overflow-hidden" style={{ background:dark?'rgba(255,255,255,0.08)':'rgba(26,26,46,0.08)' }}>
+                <div className="h-full rounded-full transition-all duration-700"
+                  style={{ width:'66.6%', background:`linear-gradient(90deg,${g.accent},${g.accent}99)` }}/>
+              </div>
+            </div>
+          )}
+        </div>
+      </GlassCard>
+
+      {open && (
+        <div className="mt-2 flex flex-col gap-2 pl-2">
+          {g.certs.map((c, ci) => (
+            <div key={`${g.key}-${c.name}-${ci}`} style={{ animation:`fadeUp .22s ${ci*0.04}s ease both` }}>
+              <CertRow c={c} accent={g.accent} glow={g.glow} dark={dark}/>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Certs() {
   const { dark, lang } = useApp();
   const tr   = t[lang];
-  const [open, setOpen] = useState(0);
   const bg   = dark ? '#13131e' : '#f5f0e8';
   const lbl  = certLabels[lang] || certLabels.en;
-  const groupRefs = useRef({});
-
-  const handleGroupToggle = (gi) => {
-    setOpen(prev => (prev === gi ? null : gi));
-  };
 
   return (
     <section id="certs" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300 overflow-x-hidden cv-auto section-shell">
@@ -68,58 +109,9 @@ export default function Certs() {
       </p>
 
       <div className="flex flex-col gap-2.5 w-full max-w-3xl stagger" style={{ overflowAnchor: 'none' }}>
-        {certGroups.map((g, gi) => {
-          const isOpen = open===gi;
-          const Icon = g.icon;
-          return (
-            <div
-              key={gi}
-              ref={el => { groupRefs.current[gi] = el; }}
-              style={{ overflowAnchor: 'none' }}>
-              {/* Group header button */}
-              <GlassCard dark={dark} glow={g.glow} className="rounded-2xl float-card" onClick={() => handleGroupToggle(gi)}
-                style={{
-                  cursor:'pointer',
-                  ...(isOpen ? { background:`${g.accent}14`, border:`1px solid ${g.accent}38`, boxShadow:`0 8px 28px ${g.glow}` } : {}),
-                }}>
-                <div className="px-5 py-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <span style={{ color:isOpen?g.accent:muted(dark) }}><Icon size={15}/></span>
-                      <span className="font-semibold text-sm" style={{ color:isOpen?g.accent:ink(dark) }}>{lbl[g.key]}</span>
-                      <span className="text-xs opacity-45" style={{ color:muted(dark) }}>({g.certs.length})</span>
-                    </div>
-                    <ChevronDown size={15} style={{ color:g.accent, transform:isOpen?'rotate(180deg)':'rotate(0)', transition:'transform .3s' }}/>
-                  </div>
-                  {/* Progress bar for Google Cybersecurity */}
-                  {g.key === 'cyber' && (
-                    <div className="mt-2.5">
-                      <div className="flex justify-between text-[.62rem] mb-1" style={{ color:muted(dark) }}>
-                        <span>Google Cybersecurity Professional Certificate</span>
-                        <span style={{ color:g.accent, fontWeight:600 }}>6/9</span>
-                      </div>
-                      <div className="h-1.5 rounded-full overflow-hidden" style={{ background:dark?'rgba(255,255,255,0.08)':'rgba(26,26,46,0.08)' }}>
-                        <div className="h-full rounded-full transition-all duration-700"
-                          style={{ width:'66.6%', background:`linear-gradient(90deg,${g.accent},${g.accent}99)` }}/>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </GlassCard>
-
-              {/* Cert rows */}
-              {isOpen && (
-                <div className="mt-2 flex flex-col gap-2 pl-2">
-                  {g.certs.map((c, ci) => (
-                    <div key={ci} style={{ animation:`fadeUp .22s ${ci*0.04}s ease both` }}>
-                      <CertRow c={c} accent={g.accent} glow={g.glow} dark={dark}/>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          );
-        })}
+        {certGroups.map((g, gi) => (
+          <CertGroup key={g.key} g={g} gi={gi} lbl={lbl} dark={dark} />
+        ))}
       </div>
     </section>
   );
