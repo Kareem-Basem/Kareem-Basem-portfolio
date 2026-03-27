@@ -12,44 +12,6 @@ import {
   projectPreviews,
 } from '../data/portfolioData';
 
-/* ─── Modal wrapper ─── */
-function Modal({ onClose, dark, ariaLabel, children }) {
-  const overlay = dark ? 'rgba(0,0,0,0.7)' : 'rgba(0,0,0,0.5)';
-  const dialogRef = useRef(null);
-
-  useEffect(() => {
-    const onKey = e => {
-      if (e.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', onKey);
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    dialogRef.current?.focus();
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [onClose]);
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto"
-      style={{ background: overlay, backdropFilter:'blur(8px)' }}
-      onClick={onClose}>
-      <div
-        ref={dialogRef}
-        role="dialog"
-        aria-modal="true"
-        aria-label={ariaLabel}
-        tabIndex={-1}
-        className="relative w-full max-w-lg my-4 outline-none"
-        onClick={e => e.stopPropagation()}
-        style={{ animation:'fadeUp .25s ease both' }}>
-        {children}
-      </div>
-    </div>
-  );
-}
-
 /* ─── Examor Modal ─── */
 function ExamorModal({ onClose, dark, lang }) {
   const features = examorFeatures[lang] || examorFeatures.en;
@@ -83,140 +45,6 @@ function ExamorModal({ onClose, dark, lang }) {
               <span className="text-[.83rem] leading-snug" style={{ color:f.done?ink:muted }}>{f.text}</span>
             </div>
           ))}
-        </div>
-      </div>
-    </Modal>
-  );
-}
-
-/* ─── GTA Modal (VC or SA) ─── */
-function GTAModal({ data, github, onClose, dark }) {
-  const bg    = dark ? 'rgba(15,15,20,0.97)' : 'rgba(255,255,255,0.97)';
-  const bord  = dark ? 'rgba(255,255,255,0.12)' : 'rgba(26,26,46,0.12)';
-  const ink   = dark ? '#f0f0f8' : '#1a1a2e';
-  const muted = dark ? 'rgba(255,255,255,0.5)' : '#8a8a9a';
-  const divider = dark ? 'rgba(255,255,255,0.08)' : 'rgba(26,26,46,0.08)';
-  const ac    = data.accentColor;
-  const shots = Array.isArray(data.shots) ? data.shots : [];
-  const [si, setSi] = useState(0);
-  const hasShots = shots.length > 0;
-  const curShot = hasShots ? shots[si % shots.length] : null;
-
-  return (
-    <Modal onClose={onClose} dark={dark} ariaLabel={`${data.title} details`}>
-      <div className="rounded-2xl overflow-hidden shadow-2xl"
-        style={{ background:bg, border:`1px solid ${bord}`, backdropFilter:'blur(14px)' }}>
-
-        {/* Header accent stripe */}
-        <div className="h-1" style={{ background:`linear-gradient(90deg,${ac},${ac}88)` }}/>
-
-        <div className="p-6">
-          <button
-            onClick={onClose}
-            aria-label="Close modal"
-            className="absolute top-5 right-5 transition-colors hover:text-amber"
-            style={{ color:muted }}>
-            <X size={18}/>
-          </button>
-
-          {/* Title row */}
-          <div className="flex items-center gap-3 mb-5">
-            <img src={data.icon} alt="icon" className="w-10 h-10 rounded-xl object-contain"
-              style={{ background:`${ac}15`, border:`1px solid ${ac}28`, padding:4 }}
-              loading="lazy"
-              decoding="async"
-              onError={e => { e.target.style.display='none'; }}/>
-            <div>
-              <h3 className="font-serif-display text-lg tracking-tight leading-tight" style={{ color:ink }}>{data.title}</h3>
-              <span className="text-[.65rem] font-semibold px-2 py-0.5 rounded-full" style={{ background:`${ac}15`, color:ac, border:`1px solid ${ac}28` }}>{data.era}</span>
-            </div>
-          </div>
-
-          {/* Features grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-5">
-            {data.features.map(({ Icon, label, text }, i) => (
-              <div key={i} className="rounded-xl p-3" style={{ background:`${ac}08`, border:`1px solid ${ac}20` }}>
-                <div className="flex items-center gap-1.5 mb-1">
-                  <Icon size={13} style={{ color:ac }}/>
-                  <span className="text-[.68rem] font-semibold" style={{ color:ac }}>{label}</span>
-                </div>
-                <p className="text-[.78rem] leading-snug" style={{ color:muted }}>{text}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Screenshot carousel */}
-          {hasShots && (
-            <div className="rounded-xl overflow-hidden mb-5" style={{ border:`1px solid ${divider}` }}>
-              <div className="relative">
-                <img
-                  src={curShot}
-                  alt={`${data.title} screenshot`}
-                  className="w-full object-cover max-h-[260px]"
-                  loading="lazy"
-                  decoding="async"
-                />
-                {shots.length > 1 && (
-                  <>
-                    <button
-                      type="button"
-                      aria-label="Previous screenshot"
-                      onClick={() => setSi(v => (v - 1 + shots.length) % shots.length)}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full flex items-center justify-center"
-                      style={{ background:'rgba(0,0,0,0.35)', color:'#fff', border:'1px solid rgba(255,255,255,0.35)' }}>
-                      ‹
-                    </button>
-                    <button
-                      type="button"
-                      aria-label="Next screenshot"
-                      onClick={() => setSi(v => (v + 1) % shots.length)}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full flex items-center justify-center"
-                      style={{ background:'rgba(0,0,0,0.35)', color:'#fff', border:'1px solid rgba(255,255,255,0.35)' }}>
-                      ›
-                    </button>
-                    <div className="absolute left-1/2 -translate-x-1/2 bottom-2 flex gap-1">
-                      {shots.map((_, i) => (
-                        <span key={i} className="block w-2 h-2 rounded-full"
-                          style={{ background: i === (si % shots.length) ? ac : 'rgba(255,255,255,0.6)' }} />
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Sys req */}
-          <div className="rounded-xl p-3 mb-4" style={{ background:dark?'rgba(255,255,255,0.04)':'rgba(26,26,46,0.04)', border:`1px solid ${divider}` }}>
-            <p className="text-[.65rem] font-semibold tracking-wider uppercase mb-2" style={{ color:muted }}>System Requirements</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {[['Min',data.sysReq.min],['Rec',data.sysReq.rec]].map(([lbl,val]) => (
-                <div key={lbl}>
-                  <p className="text-[.6rem] uppercase tracking-wider font-semibold mb-0.5" style={{ color:ac }}>{lbl}</p>
-                  <p className="text-[.75rem] leading-snug" style={{ color:muted }}>{val}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Doc preview + download + GitHub */}
-          <div className="flex items-center justify-between pt-3" style={{ borderTop:`1px solid ${divider}` }}>
-            <p className="text-[.7rem] max-w-[60%]" style={{ color:muted }}>{data.note}</p>
-            <div className="flex gap-2">
-              {github && (
-                <a href={github} target="_blank" rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 text-[.72rem] font-semibold px-3 py-1.5 rounded-full transition-all hover:-translate-y-0.5"
-                  style={{ background:'rgba(255,255,255,0.08)', color: dark?'#f0f0f8':'#1a1a2e', border:`1px solid ${dark?'rgba(255,255,255,0.15)':'rgba(26,26,46,0.15)'}` }}>
-                  <Github size={12}/> GitHub
-                </a>
-              )}
-              <a href={data.docImg} target="_blank" rel="noreferrer"
-                className="inline-flex items-center gap-1.5 text-[.72rem] font-semibold px-3 py-1.5 rounded-full transition-all hover:-translate-y-0.5"
-                style={{ background:`${ac}15`, color:ac, border:`1px solid ${ac}28` }}>
-                <FileText size={12}/> Docs
-              </a>
-            </div>
-          </div>
         </div>
       </div>
     </Modal>
@@ -279,8 +107,8 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
         boxShadow: hov
           ? `0 20px 55px ${m.glow}, inset 0 1px 0 rgba(255,255,255,${dark?'0.09':'0.92'})`
           : `0 3px 18px rgba(0,0,0,${dark?'0.22':'0.06'}), inset 0 1px 0 rgba(255,255,255,${dark?'0.06':'0.88'})`,
-        transform: hov ? 'translateY(-6px) scale(1.005)' : 'none',
-        transition:'all 0.2s ease',
+        transform: hov ? 'translateY(-3px)' : 'none',
+        transition:'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
         cursor: canClick ? 'pointer' : 'default',
       }}
       onMouseEnter={() => setHov(true)}
@@ -478,6 +306,19 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
   );
 }
 
+function TogglePreviewCard(props) {
+  const [open, setOpen] = useState(false);
+  return (
+    <GlassCard
+      {...props}
+      previewToggle
+      previewDefaultOpen={false}
+      previewOpen={open}
+      onTogglePreview={() => setOpen(v => !v)}
+    />
+  );
+}
+
 /* ─── Main ─── */
 export default function Projects() {
   const { dark, lang } = useApp();
@@ -489,7 +330,6 @@ export default function Projects() {
   const [modal, setModal] = useState(null); // 'examor' | 'vc' | 'sa' | null
   const [lightbox, setLightbox] = useState(null); // { src, title }
   const previewToggleIndexes = new Set([4, 5]);
-  const [openPreviewIndex, setOpenPreviewIndex] = useState(null);
   const bg = dark ? '#0f0f14' : '#fdfcf9';
 
   // Map project index → modal type
@@ -502,22 +342,28 @@ export default function Projects() {
         <div className="grid md:grid-cols-2 gap-5 stagger">
           {tr.projects.map((p, i) => {
             const isToggleCard = previewToggleIndexes.has(i);
-            return (
-            <GlassCard key={i} p={p} m={projectMeta[i]} chips={chips[i]} index={i}
-              modalType={modalTypes[i]} dark={dark}
-              onOpen={() => setModal(modalTypes[i])}
-              githubUrl={i === 1 ? projectLinks.github.vision : i === 2 ? projectLinks.github.vc : i === 3 ? projectLinks.github.sa : null}
-              liveUrl={i === 0 ? projectLinks.live.examor : i === 1 ? projectLinks.live.vision : null}
-              previewUrls={projectPreviews[i] || null}
-              onPreview={(src, title) => setLightbox({ src, title })}
-              techLabel={techLabel}
-              topLabel={topLabel}
-              previewToggleLabel={previewToggleLabel}
-              previewToggle={isToggleCard}
-              previewDefaultOpen={false}
-              previewOpen={isToggleCard ? openPreviewIndex === i : undefined}
-              onTogglePreview={isToggleCard ? () => setOpenPreviewIndex(prev => (prev === i ? null : i)) : undefined}
-            />
+            const commonProps = {
+              key: i,
+              p,
+              m: projectMeta[i],
+              chips: chips[i],
+              index: i,
+              modalType: modalTypes[i],
+              dark,
+              onOpen: () => setModal(modalTypes[i]),
+              githubUrl: i === 1 ? projectLinks.github.vision : i === 2 ? projectLinks.github.vc : i === 3 ? projectLinks.github.sa : null,
+              liveUrl: i === 0 ? projectLinks.live.examor : i === 1 ? projectLinks.live.vision : null,
+              previewUrls: projectPreviews[i] || null,
+              onPreview: (src, title) => setLightbox({ src, title }),
+              techLabel,
+              topLabel,
+              previewToggleLabel,
+            };
+
+            return isToggleCard ? (
+              <TogglePreviewCard {...commonProps} />
+            ) : (
+              <GlassCard {...commonProps} />
             );
           })}
         </div>
@@ -555,3 +401,8 @@ export default function Projects() {
     </>
   );
 }
+
+
+
+
+
