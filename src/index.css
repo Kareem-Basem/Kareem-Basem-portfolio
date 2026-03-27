@@ -208,18 +208,6 @@ html, body {
 /* RTL */
 [dir="rtl"] body { font-family: 'Plus Jakarta Sans', 'Segoe UI', Tahoma, sans-serif; }
 
-/* Scroll progress */
-#scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 2.5px;
-  background: linear-gradient(90deg, #f0a500, #2a9d8f);
-  z-index: 9999;
-  pointer-events: none;
-  will-change: width;
-}
-
 /* Back to top */
 #back-top {
   position: fixed;
@@ -343,6 +331,27 @@ html {
 
 .float-card {
   will-change: transform;
+}
+
+/* Lighter card shadows for performance */
+.float-card {
+  box-shadow: 0 8px 26px rgba(0,0,0,0.08) !important;
+}
+.float-card:hover {
+  box-shadow: 0 14px 32px rgba(0,0,0,0.12) !important;
+}
+
+/* Reduce decorative backgrounds on heavy sections */
+#projects.section-shell::before,
+#projects.section-shell::after,
+#experience.section-shell::before,
+#experience.section-shell::after,
+#certs.section-shell::before,
+#certs.section-shell::after,
+#contact.section-shell::before,
+#contact.section-shell::after {
+  background: none !important;
+  opacity: 0 !important;
 }
 
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {

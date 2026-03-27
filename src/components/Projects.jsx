@@ -495,7 +495,7 @@ export default function Projects() {
   const [modal, setModal] = useState(null); // 'examor' | 'vc' | 'sa' | null
   const [lightbox, setLightbox] = useState(null); // { src, title }
   const previewToggleIndexes = new Set([4, 5]);
-  const [previewOpenMap, setPreviewOpenMap] = useState({ 4: false, 5: false });
+  const [openPreviewIndex, setOpenPreviewIndex] = useState(null);
   const bg = dark ? '#0f0f14' : '#fdfcf9';
 
   // Map project index → modal type
@@ -521,11 +521,8 @@ export default function Projects() {
               previewToggleLabel={previewToggleLabel}
               previewToggle={isToggleCard}
               previewDefaultOpen={false}
-              previewOpen={isToggleCard ? previewOpenMap[i] : undefined}
-              onTogglePreview={isToggleCard ? () => setPreviewOpenMap(prev => ({
-                4: i === 4 ? !prev[4] : false,
-                5: i === 5 ? !prev[5] : false,
-              })) : undefined}
+              previewOpen={isToggleCard ? openPreviewIndex === i : undefined}
+              onTogglePreview={isToggleCard ? () => setOpenPreviewIndex(prev => (prev === i ? null : i)) : undefined}
             />
             );
           })}

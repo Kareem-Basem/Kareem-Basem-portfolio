@@ -11,42 +11,6 @@ import { ChevronUp } from 'lucide-react';
 import { projectLinks } from './data/portfolioData';
 import t from './i18n/translations';
 
-function ScrollProgress() {
-  const barRef = useRef(null);
-  useEffect(() => {
-    let frame = null;
-
-    const update = () => {
-      const el = document.documentElement;
-      const scrolled = el.scrollTop || document.body.scrollTop;
-      const total = el.scrollHeight - el.clientHeight;
-      if (barRef.current) {
-        const width = total > 0 ? (scrolled / total) * 100 : 0;
-        barRef.current.style.width = `${width}%`;
-      }
-    };
-
-    const onScroll = () => {
-      if (frame !== null) return;
-      frame = requestAnimationFrame(() => {
-        frame = null;
-        update();
-      });
-    };
-
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-
-    return () => {
-      if (frame !== null) cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-    };
-  }, []);
-  return <div id="scroll-progress" ref={barRef} />;
-}
-
 function BackToTop({ dark }) {
   const [vis, setVis] = useState(false);
   useEffect(() => {
@@ -212,7 +176,6 @@ function Inner() {
 
   return (
     <>
-      <ScrollProgress />
       <Navbar />
       <Hero />
       <About />
