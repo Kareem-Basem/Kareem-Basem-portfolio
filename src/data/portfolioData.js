@@ -350,6 +350,7 @@ export const gtaData = {
 
 export const projectLinks = {
   github: {
+    examor: 'https://github.com/Kareem-Basem/Examor-platform',
     vision: 'https://github.com/Kareem-Basem/vision-library',
     vc: gtaData.vc.github,
     sa: gtaData.sa.github,

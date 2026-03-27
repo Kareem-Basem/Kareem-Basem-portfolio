@@ -295,18 +295,20 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
               </span>
             )}
           </div>
-          {liveUrl && (
-            <span className="text-[.58rem] font-semibold px-2 py-0.5 rounded-full"
-              style={{ background:`${m.accent}22`, color:m.accent, border:`1px solid ${m.accent}38` }}>
-              Live
-            </span>
-          )}
-          {modalType === 'examor' && (
-            <span className="text-[.58rem] font-semibold px-2 py-0.5 rounded-full" style={{ background:'rgba(46,139,87,0.14)', color:'#2e8b57', border:'1px solid rgba(46,139,87,0.28)' }}>✅ Completed</span>
-          )}
-          {(modalType === 'vc' || modalType === 'sa') && (
-            <span className="text-[.58rem] font-semibold px-2 py-0.5 rounded-full" style={{ background:`${m.accent}12`, color:m.accent, border:`1px solid ${m.accent}28` }}>📄 Docs</span>
-          )}
+          <div className="flex items-center gap-2">
+            {liveUrl && (
+              <span className="text-[.58rem] font-semibold px-2 py-0.5 rounded-full tahoe-pill"
+                style={{ background:`${m.accent}22`, color:m.accent, border:`1px solid ${m.accent}38` }}>
+                Live
+              </span>
+            )}
+            {modalType === 'examor' && (
+              <span className="text-[.58rem] font-semibold px-2 py-0.5 rounded-full tahoe-pill" style={{ background:'rgba(46,139,87,0.14)', color:'#2e8b57', border:'1px solid rgba(46,139,87,0.28)' }}>✅ Completed</span>
+            )}
+            {(modalType === 'vc' || modalType === 'sa') && (
+              <span className="text-[.58rem] font-semibold px-2 py-0.5 rounded-full tahoe-pill" style={{ background:`${m.accent}12`, color:m.accent, border:`1px solid ${m.accent}28` }}>📄 Docs</span>
+            )}
+          </div>
         </div>
 
         <h3 className="font-serif-display text-xl tracking-tight leading-snug mb-2" style={{ color:ink }}>{p.title}</h3>
@@ -492,7 +494,7 @@ export default function Projects() {
               modalType: modalTypes[i],
               dark,
               onOpen: () => setModal(modalTypes[i]),
-              githubUrl: i === 1 ? projectLinks.github.vision : i === 2 ? projectLinks.github.vc : i === 3 ? projectLinks.github.sa : null,
+              githubUrl: i === 0 ? projectLinks.github.examor : i === 1 ? projectLinks.github.vision : i === 2 ? projectLinks.github.vc : i === 3 ? projectLinks.github.sa : null,
               liveUrl: i === 0 ? projectLinks.live.examor : i === 1 ? projectLinks.live.vision : null,
               previewUrls: projectPreviews[i] || null,
               onPreview: (src, title) => setLightbox({ src, title }),
