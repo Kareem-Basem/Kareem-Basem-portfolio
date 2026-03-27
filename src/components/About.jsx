@@ -38,8 +38,8 @@ export default function About() {
               { e:'🏅', text: lang==='ar' ? 'بطل الكشافة الوطني — المركز الأول (2020)' : 'National Scout Excellence Champion — 1st Place (2020)' },
               { e:'🏆', text: lang==='ar' ? 'مديرية أسيوط — المركز الأول (2019)'       : '2019 · Asyut Directorate — Scout Excellence, 1st Place' },
             ].map((b, i) => (
-              <div key={i} className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold"
-                style={{ background:'rgba(240,165,0,0.09)', border:'1px solid rgba(240,165,0,0.25)', color:'#e8920a', display:'flex', marginBottom:6 }}>
+              <div key={i} className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tahoe-pill"
+                style={{ background:'rgba(255,255,255,0.65)', border:'1px solid rgba(240,165,0,0.25)', color:'#e8920a', display:'flex', marginBottom:6 }}>
                 {b.e} <span className="break-words">{b.text}</span>
               </div>
             ))}
