@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { glass, glassHov } from '../utils/glass';
 
 /**
@@ -18,43 +18,22 @@ import { glass, glassHov } from '../utils/glass';
  */
 export default function GlassCard({ dark, glow, className = '', onClick, style = {}, children }) {
   const [hov, setHov] = useState(false);
-  const cardRef = useRef(null);
 
   const base  = glass(dark);
   const hover = glassHov(dark, glow || 'rgba(240,165,0,0.28)');
 
-  const handleMove = (e) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    if (!cardRef.current) return;
-    cardRef.current.style.setProperty('--glow-x', `${((e.clientX - r.left) / r.width * 100).toFixed(1)}%`);
-    cardRef.current.style.setProperty('--glow-y', `${((e.clientY - r.top) / r.height * 100).toFixed(1)}%`);
-  };
-
   return (
     <div
-      ref={cardRef}
       className={`relative ${className}`}
       style={{
         ...(hov ? hover : base),
-        transition: 'all 0.2s ease',
+        transition: 'box-shadow 0.18s ease, border-color 0.18s ease, background-color 0.18s ease',
         cursor: onClick ? 'pointer' : 'default',
-        '--glow-x': '50%',
-        '--glow-y': '50%',
         ...style,
       }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      onMouseMove={handleMove}
       onClick={onClick}>
-
-      {/* Mouse-tracking glow */}
-      <div
-        className="absolute inset-0 pointer-events-none rounded-[inherit] transition-opacity duration-300"
-        style={{
-          opacity: hov ? 1 : 0,
-          background: `radial-gradient(circle at var(--glow-x) var(--glow-y), ${glow || 'rgba(240,165,0,0.22)'}, transparent 60%)`,
-        }}
-      />
 
       {/* Specular top highlight */}
       <div
