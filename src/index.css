@@ -24,6 +24,16 @@
   section[id] { scroll-margin-top: 90px; }
 }
 
+/* Hide side scrollbar (keep scroll) */
+html, body {
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
 :root {
   --glass-blur: 12px;
   --glass-sat: 140%;
@@ -287,16 +297,14 @@ html {
 /* Scroll reveal */
 .reveal {
   opacity: 0;
-  transform: translate3d(0, 18px, 0);
-  filter: blur(1.5px);
-  transition: opacity 0.28s ease, transform 0.28s ease, filter 0.28s ease;
+  transform: translate3d(0, 14px, 0);
+  transition: opacity 0.26s ease, transform 0.26s ease;
   will-change: opacity, transform;
 }
 
 .reveal.visible {
   opacity: 1;
   transform: translate3d(0, 0, 0);
-  filter: blur(0);
 }
 
 .card-lift {
@@ -357,7 +365,6 @@ html {
 
 @media (max-width: 768px) {
   .reveal {
-    filter: none;
     transition: opacity 0.22s ease, transform 0.22s ease;
     will-change: auto;
   }
@@ -378,6 +385,11 @@ html {
   .blob-avatar {
     animation: none !important;
   }
+}
+
+/* Project preview ratio */
+.preview-16-9 {
+  aspect-ratio: 16 / 9;
 }
 
 @media (prefers-reduced-motion: reduce) {

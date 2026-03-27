@@ -308,9 +308,8 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
         {/* Mini preview screen */}
         <div className="mt-4 mb-2">
           <div
-            className="relative rounded-xl overflow-hidden"
+            className="relative rounded-xl overflow-hidden preview-16-9"
             style={{
-              height: 64,
               background: dark
                 ? 'linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))'
                 : 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.7))',

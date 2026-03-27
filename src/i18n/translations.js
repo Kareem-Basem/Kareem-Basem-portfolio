@@ -1,7 +1,7 @@
 const t = {
   en: {
     // Navbar
-    about:'About', projectsNav:'Projects', testimonialsNav:'Testimonials', experience:'Experience',
+    about:'About', projectsNav:'Projects', experience:'Experience',
     certs:'Certs', contact:'Contact', hireMe:'Hire Me',
 
     // Hero
@@ -30,13 +30,6 @@ const t = {
     ],
 
     // Experience
-    testimonialsTag:'Testimonials', testimonialsTitle:'Words That <em>Matter</em>',
-    testimonials:[
-      { quote:"Kareem learns fast, communicates clearly, and delivers dependable work.", name:"Mentor", role:"Program Supervisor" },
-      { quote:"Strong problem-solver with a real passion for cybersecurity and systems.", name:"Trainer", role:"Technical Lead" },
-      { quote:"Consistent, focused, and always improving—great teammate.", name:"Colleague", role:"Project Team" },
-    ],
-
     // Experience
     expTag:'Career', expTitle:'Experience & <em>Training</em>',
     all:'All', internships:'Internships', training:'Training',
@@ -51,7 +44,7 @@ const t = {
 
   ar: {
     // Navbar
-    about:'عني', projectsNav:'مشاريع', testimonialsNav:'آراء', experience:'خبرة',
+    about:'عني', projectsNav:'مشاريع', experience:'خبرة',
     certs:'شهادات', contact:'تواصل', hireMe:'وظّفني',
 
     // Hero
@@ -80,13 +73,6 @@ const t = {
     ],
 
     // Experience
-    testimonialsTag:'آراء', testimonialsTitle:'كلمات <em>تستحق الثقة</em>',
-    testimonials:[
-      { quote:'كريم سريع التعلّم، تواصله واضح، وتسليمه يعتمد عليه.', name:'موجّه', role:'مشرف برنامج' },
-      { quote:'حلّال مشكلات قوي وشغوف بالأمن السيبراني والأنظمة.', name:'مدرب', role:'قائد تقني' },
-      { quote:'ملتزم ويتحسن باستمرار—زميل ممتاز.', name:'زميل', role:'فريق مشروع' },
-    ],
-
     // Experience
     expTag:'المسار المهني', expTitle:'الخبرة <em>والتدريب</em>',
     all:'الكل', internships:'التدريبات', training:'الكورسات',

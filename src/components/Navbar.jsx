@@ -13,7 +13,6 @@ export default function Navbar() {
   const links = [
     { id:'about',      label: tr.about },
     { id:'projects',   label: tr.projectsNav },
-    { id:'testimonials', label: tr.testimonialsNav },
     { id:'experience', label: tr.experience },
     { id:'certs',      label: tr.certs },
     { id:'contact',    label: tr.contact },
