@@ -23,6 +23,7 @@ export const glassHov = (dark, glow = AMBER + '44') => ({
   backdropFilter:       'blur(var(--glass-blur-hover,12px)) saturate(var(--glass-sat,140%))',
   WebkitBackdropFilter: 'blur(var(--glass-blur-hover,12px)) saturate(var(--glass-sat,140%))',
   boxShadow:            `0 22px 60px ${glow}, inset 0 1px 0 rgba(255,255,255,${dark?'0.12':'0.98'})`,
+  transform:            'translateY(-4px)',
 });
 
 // Legacy alias
