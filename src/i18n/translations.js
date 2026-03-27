@@ -18,7 +18,7 @@ const t = {
     skills:{ cyber:'Cybersecurity', ai:'AI & Gen AI', net:'Networking', web:'Web Development', game:'Game Modding', db:'Database Design' },
 
     // Projects
-    projTag:'Selected Work', projTitle:'Featured <em>Projects</em>', techStack:'Tech Stack', topProject:'Top Project',
+    projTag:'Selected Work', projTitle:'Featured <em>Projects</em>', techStack:'Tech Stack', topProject:'Top Project', showPreview:'Show Preview', hidePreview:'Hide Preview',
     inProgress:'🔄 In Progress',
     projects:[
       { tag:'Full Stack Platform', title:'Examor — Online Exam Platform',       desc:'End-to-end exam platform for institutions. React + Node.js + SQL Server with JWT auth, auto-grading, role-based access, and unique exam codes.' },
@@ -61,7 +61,7 @@ const t = {
     skills:{ cyber:'الأمن السيبراني', ai:'الذكاء الاصطناعي', net:'الشبكات', web:'تطوير الويب', game:'تعديل الألعاب', db:'قواعد البيانات' },
 
     // Projects
-    projTag:'أعمالي', projTitle:'المشاريع <em>المميزة</em>', techStack:'التقنيات', topProject:'مشروع مميز',
+    projTag:'أعمالي', projTitle:'المشاريع <em>المميزة</em>', techStack:'التقنيات', topProject:'مشروع مميز', showPreview:'عرض الصورة', hidePreview:'إخفاء الصورة',
     inProgress:'🔄 قيد التطوير',
     projects:[
       { tag:'Full Stack',       title:'Examor — منصة امتحانات',              desc:'منصة امتحانات متكاملة للمؤسسات. React + Node.js + SQL Server مع JWT وتصحيح تلقائي ونظام أدوار وكود امتحان فريد.' },

@@ -13,9 +13,6 @@
     overflow-x: hidden;
     max-width: 100vw;
   }
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: #fdfcf9; }
-  ::-webkit-scrollbar-thumb { background: #f0a500; border-radius: 4px; }
   a:focus-visible,
   button:focus-visible {
     outline: 2px solid #f0a500;
@@ -27,9 +24,9 @@
 /* Hide side scrollbar (keep scroll) */
 html, body {
   scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-html::-webkit-scrollbar,
-body::-webkit-scrollbar {
+*::-webkit-scrollbar {
   width: 0;
   height: 0;
 }
@@ -53,9 +50,6 @@ body::-webkit-scrollbar {
     --nav-sat: 140%;
     --btn-blur: 6px;
   }
-  ::-webkit-scrollbar { width: 0; height: 0; }
-  ::-webkit-scrollbar-thumb { background: transparent; }
-  body { scrollbar-width: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -352,21 +346,24 @@ html {
 }
 
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .blob-hero { animation: morph 12s ease-in-out infinite; }
-  .blob-hero-2 { animation: morph2 14s ease-in-out infinite; }
-  .blob-avatar { animation: morph 12s ease-in-out infinite; }
-  .float-card { animation: floatCard 6s ease-in-out infinite; }
-  .float-card:nth-child(2) { animation-delay: 0.5s; }
-  .float-card:nth-child(3) { animation-delay: 1s; }
-  .float-card:nth-child(4) { animation-delay: 1.5s; }
-  .float-card:nth-child(5) { animation-delay: 2s; }
-  .float-card:nth-child(6) { animation-delay: 2.5s; }
+  .blob-hero,
+  .blob-hero-2,
+  .blob-avatar,
+  .float-card,
+  .float-badge,
+  .glow-pulse {
+    animation: none !important;
+  }
 }
 
 @media (max-width: 768px) {
   .reveal {
     transition: opacity 0.22s ease, transform 0.22s ease;
     will-change: auto;
+  }
+
+  .section-shell::after {
+    opacity: 0.15;
   }
 
   #projects,

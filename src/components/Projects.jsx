@@ -224,21 +224,42 @@ function GTAModal({ data, github, onClose, dark }) {
 }
 
 /* ─── Glass card ─── */
-function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liveUrl, previewUrls, onPreview, techLabel, topLabel }) {
+function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liveUrl, previewUrls, onPreview, techLabel, topLabel, previewToggleLabel, previewToggle, previewDefaultOpen = true, previewOpen, onTogglePreview }) {
   const [hov, setHov] = useState(false);
   const [pos, setPos] = useState({ x:50, y:50 });
   const [pi, setPi] = useState(0);
+  const [fading, setFading] = useState(false);
+  const [localPreviewOpen, setLocalPreviewOpen] = useState(previewDefaultOpen);
   const hasCarousel = Array.isArray(previewUrls) && previewUrls.length > 1;
   const curPreview = Array.isArray(previewUrls) ? previewUrls[pi] : previewUrls;
   const canPreview = Boolean(curPreview);
+  const reduceMotion = useRef(false);
+  const isControlled = typeof previewOpen === 'boolean';
+  const isPreviewOpen = isControlled ? previewOpen : localPreviewOpen;
+  const goTo = (nextIndex) => {
+    if (!hasCarousel) return;
+    setFading(true);
+    setTimeout(() => {
+      setPi(nextIndex);
+      setFading(false);
+    }, 150);
+  };
 
   useEffect(() => {
-    if (!hasCarousel || hov) return;
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const sync = () => { reduceMotion.current = media.matches; };
+    sync();
+    media.addEventListener?.('change', sync);
+    return () => media.removeEventListener?.('change', sync);
+  }, []);
+
+  useEffect(() => {
+    if (!hasCarousel || hov || reduceMotion.current) return;
     const id = setInterval(() => {
-      setPi(v => (v + 1) % previewUrls.length);
-    }, 3000);
+      goTo((pi + 1) % previewUrls.length);
+    }, 5000);
     return () => clearInterval(id);
-  }, [hasCarousel, hov, previewUrls]);
+  }, [hasCarousel, hov, pi, previewUrls]);
 
   const gbg   = dark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.72)';
   const gbord = dark ? 'rgba(255,255,255,0.12)' : 'rgba(26,26,46,0.13)';
@@ -294,6 +315,12 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
               {p.tag}
             </span>
           </div>
+          {liveUrl && (
+            <span className="text-[.58rem] font-semibold px-2 py-0.5 rounded-full"
+              style={{ background:`${m.accent}22`, color:m.accent, border:`1px solid ${m.accent}38` }}>
+              Live
+            </span>
+          )}
           {modalType === 'examor' && (
             <span className="text-[.58rem] font-semibold px-2 py-0.5 rounded-full" style={{ background:'rgba(46,139,87,0.14)', color:'#2e8b57', border:'1px solid rgba(46,139,87,0.28)' }}>✅ Completed</span>
           )}
@@ -307,84 +334,100 @@ function GlassCard({ p, m, chips, index, modalType, dark, onOpen, githubUrl, liv
 
         {/* Mini preview screen */}
         <div className="mt-4 mb-2">
-          <div
-            className="relative rounded-xl overflow-hidden preview-16-9"
-            style={{
-              background: dark
-                ? 'linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))'
-                : 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.7))',
-              border: `1px solid ${dark ? 'rgba(255,255,255,0.12)' : 'rgba(26,26,46,0.12)'}`,
-              boxShadow: dark
-                ? 'inset 0 1px 0 rgba(255,255,255,0.06)'
-                : 'inset 0 1px 0 rgba(255,255,255,0.8)',
-            }}>
-            {curPreview ? (
-              <img
-                src={curPreview}
-                alt={`${p.title} preview`}
-                className="w-full h-full object-cover"
-                loading="lazy"
-                decoding="async"
-                onClick={e => { e.stopPropagation(); onPreview?.(curPreview, p.title); }}
-                style={{ cursor: canPreview ? 'pointer' : 'default' }}
-              />
-            ) : (
-              <>
-                <div style={{ height: 10, background: dark ? 'rgba(255,255,255,0.08)' : 'rgba(26,26,46,0.08)' }} />
-                <div className="flex gap-2 p-2">
-                  <div style={{ width: 22, height: 18, borderRadius: 4, background: `${m.accent}25` }} />
-                  <div style={{ flex: 1, height: 18, borderRadius: 4, background: dark ? 'rgba(255,255,255,0.06)' : 'rgba(26,26,46,0.06)' }} />
-                </div>
-                <div className="px-2 pb-2">
-                  <div style={{ height: 8, borderRadius: 4, background: dark ? 'rgba(255,255,255,0.05)' : 'rgba(26,26,46,0.05)' }} />
-                  <div style={{ height: 8, borderRadius: 4, marginTop: 6, width: '75%', background: dark ? 'rgba(255,255,255,0.05)' : 'rgba(26,26,46,0.05)' }} />
-                </div>
-              </>
-            )}
-            {liveUrl && (
-              <span
-                className="absolute top-2 right-2 text-[.58rem] font-semibold px-2 py-0.5 rounded-full"
-                style={{ background:`${m.accent}22`, color:m.accent, border:`1px solid ${m.accent}38` }}>
-                Live
-              </span>
-            )}
-            {canPreview && (
-              <button
-                type="button"
-                aria-label="View preview"
-                onClick={e => { e.stopPropagation(); onPreview?.(curPreview, p.title); }}
-                className="absolute left-2 top-2 text-[.58rem] font-semibold px-2 py-0.5 rounded-full"
-                style={{ background:'rgba(0,0,0,0.35)', color:'#fff', border:'1px solid rgba(255,255,255,0.35)' }}>
-                View
-              </button>
-            )}
-            {hasCarousel && (
-              <>
+          {previewToggle && (
+            <button
+              type="button"
+              onClick={e => {
+                e.stopPropagation();
+                if (isControlled) {
+                  onTogglePreview?.();
+                } else {
+                  setLocalPreviewOpen(v => !v);
+                }
+              }}
+              className="text-[.66rem] font-semibold px-3 py-1 rounded-full mb-2"
+              style={{ background:`${m.accent}18`, color:m.accent, border:`1px solid ${m.accent}30` }}>
+              {isPreviewOpen ? previewToggleLabel?.hide : previewToggleLabel?.show}
+            </button>
+          )}
+          {(!previewToggle || isPreviewOpen) && (
+            <div
+              className="relative rounded-xl overflow-hidden preview-16-9"
+              style={{
+                background: dark
+                  ? 'linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))'
+                  : 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.7))',
+                border: `1px solid ${dark ? 'rgba(255,255,255,0.12)' : 'rgba(26,26,46,0.12)'}`,
+                boxShadow: dark
+                  ? 'inset 0 1px 0 rgba(255,255,255,0.06)'
+                  : 'inset 0 1px 0 rgba(255,255,255,0.8)',
+              }}>
+              {curPreview ? (
+                <img
+                  src={curPreview}
+                  alt={`${p.title} preview`}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                  onClick={e => { e.stopPropagation(); onPreview?.(curPreview, p.title); }}
+                  style={{
+                    cursor: canPreview ? 'pointer' : 'default',
+                    transition: 'opacity 180ms ease, transform 220ms ease',
+                    opacity: fading ? 0.25 : 1,
+                    transform: fading ? 'scale(0.985)' : 'scale(1)',
+                  }}
+                />
+              ) : (
+                <>
+                  <div style={{ height: 10, background: dark ? 'rgba(255,255,255,0.08)' : 'rgba(26,26,46,0.08)' }} />
+                  <div className="flex gap-2 p-2">
+                    <div style={{ width: 22, height: 18, borderRadius: 4, background: `${m.accent}25` }} />
+                    <div style={{ flex: 1, height: 18, borderRadius: 4, background: dark ? 'rgba(255,255,255,0.06)' : 'rgba(26,26,46,0.06)' }} />
+                  </div>
+                  <div className="px-2 pb-2">
+                    <div style={{ height: 8, borderRadius: 4, background: dark ? 'rgba(255,255,255,0.05)' : 'rgba(26,26,46,0.05)' }} />
+                    <div style={{ height: 8, borderRadius: 4, marginTop: 6, width: '75%', background: dark ? 'rgba(255,255,255,0.05)' : 'rgba(26,26,46,0.05)' }} />
+                  </div>
+                </>
+              )}
+              {canPreview && (
                 <button
                   type="button"
-                  aria-label="Previous preview"
-                  onClick={e => { e.stopPropagation(); setPi(v => (v - 1 + previewUrls.length) % previewUrls.length); }}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full flex items-center justify-center"
+                  aria-label="View preview"
+                  onClick={e => { e.stopPropagation(); onPreview?.(curPreview, p.title); }}
+                  className="absolute left-2 top-2 text-[.58rem] font-semibold px-2 py-0.5 rounded-full"
                   style={{ background:'rgba(0,0,0,0.35)', color:'#fff', border:'1px solid rgba(255,255,255,0.35)' }}>
-                  ‹
+                  View
                 </button>
-                <button
-                  type="button"
-                  aria-label="Next preview"
-                  onClick={e => { e.stopPropagation(); setPi(v => (v + 1) % previewUrls.length); }}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full flex items-center justify-center"
-                  style={{ background:'rgba(0,0,0,0.35)', color:'#fff', border:'1px solid rgba(255,255,255,0.35)' }}>
-                  ›
-                </button>
-                <div className="absolute left-1/2 -translate-x-1/2 bottom-1 flex gap-1">
-                  {previewUrls.map((_, i) => (
-                    <span key={i} className="block w-1.5 h-1.5 rounded-full"
-                      style={{ background: i === pi ? '#f0a500' : 'rgba(255,255,255,0.6)' }} />
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
+              )}
+              {hasCarousel && (
+                <>
+                  <button
+                    type="button"
+                    aria-label="Previous preview"
+                    onClick={e => { e.stopPropagation(); goTo((pi - 1 + previewUrls.length) % previewUrls.length); }}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full flex items-center justify-center"
+                    style={{ background:'rgba(0,0,0,0.35)', color:'#fff', border:'1px solid rgba(255,255,255,0.35)' }}>
+                    ‹
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Next preview"
+                    onClick={e => { e.stopPropagation(); goTo((pi + 1) % previewUrls.length); }}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full flex items-center justify-center"
+                    style={{ background:'rgba(0,0,0,0.35)', color:'#fff', border:'1px solid rgba(255,255,255,0.35)' }}>
+                    ›
+                  </button>
+                  <div className="absolute left-1/2 -translate-x-1/2 bottom-1 flex gap-1">
+                    {previewUrls.map((_, i) => (
+                      <span key={i} className="block w-1.5 h-1.5 rounded-full"
+                        style={{ background: i === pi ? '#f0a500' : 'rgba(255,255,255,0.6)' }} />
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
         </div>
 
         {modalType === 'examor' && (
@@ -448,8 +491,11 @@ export default function Projects() {
   const chips = projectChips[lang] || projectChips.en;
   const techLabel = tr.techStack;
   const topLabel = tr.topProject;
+  const previewToggleLabel = { show: tr.showPreview, hide: tr.hidePreview };
   const [modal, setModal] = useState(null); // 'examor' | 'vc' | 'sa' | null
   const [lightbox, setLightbox] = useState(null); // { src, title }
+  const previewToggleIndexes = new Set([4, 5]);
+  const [previewOpenMap, setPreviewOpenMap] = useState({ 4: false, 5: false });
   const bg = dark ? '#0f0f14' : '#fdfcf9';
 
   // Map project index → modal type
@@ -460,7 +506,9 @@ export default function Projects() {
       <section id="projects" style={{ background:bg }} className="py-20 md:py-24 px-[5%] transition-colors duration-300 overflow-x-hidden cv-auto section-shell">
         <SectionHeader tag={tr.projTag} title={tr.projTitle}/>
         <div className="grid md:grid-cols-2 gap-5 stagger">
-          {tr.projects.map((p, i) => (
+          {tr.projects.map((p, i) => {
+            const isToggleCard = previewToggleIndexes.has(i);
+            return (
             <GlassCard key={i} p={p} m={projectMeta[i]} chips={chips[i]} index={i}
               modalType={modalTypes[i]} dark={dark}
               onOpen={() => setModal(modalTypes[i])}
@@ -470,8 +518,14 @@ export default function Projects() {
               onPreview={(src, title) => setLightbox({ src, title })}
               techLabel={techLabel}
               topLabel={topLabel}
+              previewToggleLabel={previewToggleLabel}
+              previewToggle={isToggleCard}
+              previewDefaultOpen={false}
+              previewOpen={isToggleCard ? previewOpenMap[i] : undefined}
+              onTogglePreview={isToggleCard ? () => setPreviewOpenMap(prev => ({ ...prev, [i]: !prev[i] })) : undefined}
             />
-          ))}
+            );
+          })}
         </div>
       </section>
 
