@@ -67,7 +67,7 @@ export default function Hero() {
             style={{ ...card, color: dark ? 'rgba(255,255,255,0.8)' : ink }}>
             {tr.getInTouch}
           </a>
-          <a href={process.env.PUBLIC_URL + '/assets/kareem-cv.pdf'} download="Kareem_Basem_CV.pdf"
+          <a href={process.env.PUBLIC_URL + '/assets/kareem-cv.pdf'} download="Kareem Basem Fathi.pdf"
             className="px-6 py-3 font-semibold text-sm rounded-full transition-all hover:-translate-y-1"
             style={{ background:'rgba(240,165,0,0.10)', border:'1px solid rgba(240,165,0,0.28)', color: amber }}>
             {lang === 'ar' ? 'تحميل السيرة الذاتية' : 'Download CV'}

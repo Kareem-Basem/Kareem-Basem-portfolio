@@ -17,7 +17,7 @@ export const contactLinks = [
   { href:'mailto:karemalwy1@gmail.com', label:{ en:'karemalwy1@gmail.com', ar:'karemalwy1@gmail.com' }, Icon:Mail },
   { href:'https://www.linkedin.com/in/karem-basem', label:{ en:'LinkedIn', ar:'LinkedIn' }, Icon:Linkedin },
   { href:'https://github.com/Kareem-Basem', label:{ en:'GitHub', ar:'GitHub' }, Icon:Github },
-  { href: contactCVPath, label:{ en:'Download CV', ar:'تحميل السيرة الذاتية' }, Icon:Download, download:'Kareem_Basem_CV.pdf' },
+  { href: contactCVPath, label:{ en:'Download CV', ar:'تحميل السيرة الذاتية' }, Icon:Download, download:'Kareem Basem Fathi.pdf' },
 ];
 
 export const experienceData = {
